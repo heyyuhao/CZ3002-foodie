@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/sign_in_flutter/login_page.dart';
 import 'package:foodie/sign_in_flutter/sign_in.dart';
+import 'package:foodie/interact_database/interact_db_page.dart';
 
 class FirstScreen extends StatelessWidget {
   @override
@@ -67,6 +68,29 @@ class FirstScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'Sign Out',
+                    style: TextStyle(fontSize: 25, color: Colors.white),
+                  ),
+                ),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+              ),
+              SizedBox(height: 40),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return FirebaseRealtimeDemoScreen();
+                      },
+                    ),
+                  );
+                },
+                color: Colors.yellow,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'iteract db',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ),
