@@ -69,16 +69,16 @@ class FirestoreListView extends StatelessWidget {
             Navigator.pop(context);
           }
 
-          String eventName = documents[index].data["name"].toString();
-          String   eventHolder = documents[index].data["holder"].toString();
-          String  eventDate = documents[index].data["date"].toString();
-          String  eventDescription = documents[index].data["description"].toString();
-          String   eventImage = documents[index].data["image"].toString();
-          String   eventPrice = documents[index].data["price"].toString();
-          String   eventLocation = documents[index].data["location"].toString();
-          String eventCreator = documents[index].data["creator"].toString();
-          String eventTime = documents[index].data["time"].toString();
-          String eventLink = documents[index].data["link"].toString();
+          String eventName = documents[index].data()["name"].toString();
+          String   eventHolder = documents[index].data()["holder"].toString();
+          String  eventDate = documents[index].data()["date"].toString();
+          String  eventDescription = documents[index].data()["description"].toString();
+          String   eventImage = documents[index].data()["image"].toString();
+          String   eventPrice = documents[index].data()["price"].toString();
+          String   eventLocation = documents[index].data()["location"].toString();
+          String eventCreator = documents[index].data()["creator"].toString();
+          String eventTime = documents[index].data()["time"].toString();
+          String eventLink = documents[index].data()["link"].toString();
 
           if(eventCreator == userId){
             return Container(

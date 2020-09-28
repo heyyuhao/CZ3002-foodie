@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:foodie/todolistv2/data_provider.dart';
 import 'package:foodie/todolistv2/model.dart';
 import 'package:redux/redux.dart';
+import 'package:foodie/getfood/SelectPlace.dart';
 
 final store = Store<CategoryState>(stateReducer,
     initialState: CategoryState([
@@ -25,7 +26,7 @@ void main() => runApp(FlutterReduxApp(store: store));
    Widget build(BuildContext context) {
      return StoreProvider<CategoryState>(
        child: MaterialApp(
-         title: 'NTYou!',
+         title: 'Foodie',
          theme: ThemeData(
              primarySwatch: Colors.blue,
              primaryColor: Colors.lightBlue[700],
@@ -34,7 +35,8 @@ void main() => runApp(FlutterReduxApp(store: store));
         buttonTheme: new ButtonThemeData(
           buttonColor: Colors.lightBlue[700],
         ),),
-         home: new RootPage(auth: new Auth()),
+         // home: new RootPage(auth: new Auth()),
+         home: new PlacePage(),
        ),
        store: store,
      );
