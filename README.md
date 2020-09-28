@@ -1,5 +1,11 @@
 # CZ3002-foodie
 
+## Dependencies
+* Android sdk/api 28 [file > Project Structure > SDKs ]
+* JAVA sdk 1.8 [file > Project Structure > SDKs ]
+* Dart 2.9.1 [Android Studio > Preferences > Dart ]
+* Flutter 1.20.2 [Android Studio > Preferences > Flutter ]
+
 ## Getting Started
 
 Resources: 
