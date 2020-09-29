@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 /// Example 2 Multiple folding cells inside [Column]
-class OrderPage extends StatelessWidget {
+class OrderListPage extends StatelessWidget {
   final _foldingCellKey1 = GlobalKey<SimpleFoldingCellState>();
   final _foldingCellKey2 = GlobalKey<SimpleFoldingCellState>();
 

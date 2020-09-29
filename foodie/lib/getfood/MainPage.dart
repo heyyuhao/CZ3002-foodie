@@ -197,7 +197,7 @@ class VendorPageState extends State<VendorPage> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => OrderPage()),
+                MaterialPageRoute(builder: (context) => OrderListPage()),
               );
             },
           )

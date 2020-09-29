@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:foodie/getfood/payment1.dart';
+import 'package:foodie/getfood/Order.dart';
 
 class Dish{
   const Dish({this.name, this.price, this.calories, this.imageUrl});
@@ -125,6 +126,20 @@ class HeroPageState extends State<SelectDishPage>
     return Scaffold(
         appBar: new AppBar(
           title: const Text('Canteens'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderPage()),
+                );
+              },
+            )
+          ],
         ),
         body: CustomScrollView(
           slivers: <Widget>[
@@ -195,10 +210,10 @@ class HeroPageState extends State<SelectDishPage>
                                                             onPressed: () {
                                                               Navigator.push(
                                                                 context,
-                                                                MaterialPageRoute(builder: (context) =>PayPage()),
+                                                                MaterialPageRoute(builder: (context) =>OrderPage()),
                                                               );
                                                             },
-                                                            child: const Text('Add to order'),
+                                                            child: const Text('Add to Cart'),
                                                             color: Colors.blue,
                                                             textColor: Colors.white,
                                                           )
