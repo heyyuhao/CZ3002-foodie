@@ -4,6 +4,8 @@ import 'package:foodie/getfood/payment1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:foodie/getfood/SelectDish.dart';
+import 'package:foodie/getfood/OrderList.dart';
 
 final List<String> imgList = [
   'https://www.zaobao.com.sg/sites/default/files/images/201706/20170628/20170628_news_ntu01.jpg',
@@ -14,11 +16,11 @@ final List<String> imgList = [
 ];
 
 final List<String> nameList = [
-  "Canteen A",
-  "Canteen B",
-  "North Hill Food Court",
-  "Canteen 1",
-  "Canteen 13",
+  "365 Mala Tang",
+  "HeyTea",
+  "Korean Cuisine",
+  "Raydy Prawn Mee",
+  "Route 35 Western Food",
 ];
 
 final Widget placeholder = new Container(color: Colors.blue);
@@ -106,15 +108,15 @@ final List<Dish> _dishes = <Dish>[
   ),
 ];
 
-class HeroPage extends StatefulWidget {
-  HeroPage({Key key, this.title}) : super(key: key);
+class VendorPage extends StatefulWidget {
+  VendorPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  HeroPageState createState() => new HeroPageState();
+  VendorPageState createState() => new VendorPageState();
 }
 
-class HeroPageState extends State<HeroPage> {
+class VendorPageState extends State<VendorPage> {
   List<String> itemData = ["one", "two", "three", "four"];
 
   Widget _dialogBuilder(BuildContext context, Dish dish) {
@@ -186,6 +188,20 @@ class HeroPageState extends State<HeroPage> {
     return Scaffold(
       appBar: new AppBar(
         title: const Text('Canteens'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => OrderPage()),
+              );
+            },
+          )
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -206,70 +222,11 @@ class HeroPageState extends State<HeroPage> {
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return new GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(new PageRouteBuilder(
-                          opaque: false,
-                          barrierDismissible: true,
-                          pageBuilder: (BuildContext context, _, __) {
-                            return SimpleDialog(
-                              contentPadding: EdgeInsets.zero,
-                              children: [
-                                Image.asset("assets/${_dishes[index].imageUrl}",
-                                    fit: BoxFit.fill),
-                                Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.stretch,
-                                    children: [
-                                      Text(
-                                        _dishes[index].name,
-//                                                  style: localTheme.textTheme.display1,
-                                      ),
-                                      Text(
-                                        _dishes[index].price,
-                                      ),
-                                      SizedBox(height: 16.0),
-                                      Text(
-                                        _dishes[index].calories,
-                                      ),
-                                      SizedBox(height: 16.0),
-                                      Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Wrap(children: [
-                                            FlatButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          HeroPage()),
-                                                );
-                                              },
-                                              child: const Text('Back'),
-                                              color: Colors.white,
-                                              textColor: Colors.blue,
-                                            ),
-                                            RaisedButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          PayPage()),
-                                                );
-                                              },
-                                              child: const Text('Add to order'),
-                                              color: Colors.blue,
-                                              textColor: Colors.white,
-                                            )
-                                          ]))
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          }));
-                    },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SelectDishPage()),
+                        );
+                      },
                     child: Card(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,70 +240,10 @@ class HeroPageState extends State<HeroPage> {
                               height: 100.0,
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).push(new PageRouteBuilder(
-                                      opaque: false,
-                                      barrierDismissible: true,
-                                      pageBuilder: (BuildContext context, _, __) {
-                                        return SimpleDialog(
-                                          contentPadding: EdgeInsets.zero,
-                                          children: [
-                                            Image.asset(
-                                                "assets/${_dishes[index].imageUrl}",
-                                                fit: BoxFit.fill),
-                                            Padding(
-                                              padding: const EdgeInsets.all(16.0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                                children: [
-                                                  Text(
-                                                    _dishes[index].name,
-//                                                  style: localTheme.textTheme.display1,
-                                                  ),
-                                                  Text(
-                                                    _dishes[index].price,
-                                                  ),
-                                                  SizedBox(height: 16.0),
-                                                  Text(
-                                                    _dishes[index].calories,
-                                                  ),
-                                                  SizedBox(height: 16.0),
-                                                  Align(
-                                                      alignment:
-                                                      Alignment.centerRight,
-                                                      child: Wrap(children: [
-                                                        FlatButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child:
-                                                          const Text('Back'),
-                                                          color: Colors.white,
-                                                          textColor: Colors.blue,
-                                                        ),
-                                                        RaisedButton(
-                                                          onPressed: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                      PayPage()),
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                              'Add to order'),
-                                                          color: Colors.blue,
-                                                          textColor: Colors.white,
-                                                        )
-                                                      ]))
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      }));
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => SelectDishPage()),
+                                  );
                                 },
                                 child: Hero(
                                   tag: "image_$index",

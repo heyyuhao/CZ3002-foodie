@@ -13,6 +13,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  folding_cell: "^1.0.0"
+  google_fonts: "1.1.0"
   url_launcher: ^3.0.3
   mailer:
   flutter:
