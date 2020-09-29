@@ -99,7 +99,7 @@ class PlacePageState extends State<PlacePage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HeroPage()),
+                      MaterialPageRoute(builder: (context) => VendorPage()),
                     );
                   },
                   textColor: Colors.white,

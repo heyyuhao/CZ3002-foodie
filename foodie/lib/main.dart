@@ -5,7 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:foodie/todolistv2/data_provider.dart';
 import 'package:foodie/todolistv2/model.dart';
 import 'package:redux/redux.dart';
-import 'package:foodie/getfood/SelectPlace.dart';
+import 'package:foodie/getfood/MainPage.dart';
 
 final store = Store<CategoryState>(stateReducer,
     initialState: CategoryState([
@@ -36,7 +36,7 @@ void main() => runApp(FlutterReduxApp(store: store));
           buttonColor: Colors.lightBlue[700],
         ),),
          // home: new RootPage(auth: new Auth()),
-         home: new PlacePage(),
+         home: new VendorPage(),
        ),
        store: store,
      );
