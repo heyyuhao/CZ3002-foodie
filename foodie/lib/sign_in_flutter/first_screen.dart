@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodie/sign_in_flutter/login_page.dart';
 import 'package:foodie/sign_in_flutter/sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:foodie/interact_firestore/actions.dart';
+import 'package:foodie/interact_firestore/interact_firestore_page.dart';
 
 
 class FirstScreen extends StatelessWidget {
@@ -80,39 +80,10 @@ class FirstScreen extends StatelessWidget {
               SizedBox(height: 40),
               RaisedButton(
                 onPressed: () {
-                  final firestoreInstance = Firestore.instance;
-                  firestoreInstance.collection("testings").add(
-                  {
-                  "name" : "john",
-                  "age" : 50,
-                  "email" : "example@example.com",
-                  "address" : {
-                  "street" : "street 24",
-                  "city" : "new york"
-                  }
-                  }).then((value){
-                  print(value.documentID);
-                  });
-                },
-                color: Colors.yellow,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'add db',
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                ),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-              ),
-              SizedBox(height: 40),
-              RaisedButton(
-                onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) {
-                        return FavoriteWidget();
+                        return InteractDBWidget();
                       },
                     ),
                   );
@@ -121,7 +92,7 @@ class FirstScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'retrieve db',
+                    'Interact DB',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ),
