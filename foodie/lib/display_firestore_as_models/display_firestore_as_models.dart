@@ -19,6 +19,9 @@ class _DisplayDBModelWidget extends State<DisplayDBModelWidget> {
           stream: Firestore.instance.collection('testings').snapshots(),
           builder: (context, snapshot){
             if(snapshot.data == null) return CircularProgressIndicator();
+            print('\n\n\n\n\n\n');
+            // print(snapshot.data.getClass().getName());
+            print(snapshot.data);
             return Column(
               children: <Widget>[
                 Text("Here is the data from 'testing > 0 > name&email'"),
