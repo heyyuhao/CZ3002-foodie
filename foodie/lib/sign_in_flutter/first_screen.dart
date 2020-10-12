@@ -3,6 +3,7 @@ import 'package:foodie/sign_in_flutter/login_page.dart';
 import 'package:foodie/sign_in_flutter/sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodie/interact_firestore/interact_firestore_page.dart';
+import 'package:foodie/getfood/MainPage.dart';
 
 
 class FirstScreen extends StatelessWidget {
@@ -93,6 +94,29 @@ class FirstScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'Interact DB',
+                    style: TextStyle(fontSize: 25, color: Colors.white),
+                  ),
+                ),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+              ),
+              SizedBox(height: 40),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return (VendorPage());
+                      },
+                    ),
+                  );
+                },
+                color: Colors.blueGrey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Get Food',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ),

@@ -33,6 +33,12 @@ dependencies:
   cloud_firestore: ^0.14.0+2
   google_sign_in: ^4.5.3
   firebase_database: ^4.0.0
+  carousel_slider: ^1.0.1
+  folding_cell: ^1.0.0
+  toast: ^0.1.5
+  google_fonts: 1.1.0
+  flutter_webview_plugin: ^0.3.0+2
+
 
 dev_dependencies:
   flutter_test:
