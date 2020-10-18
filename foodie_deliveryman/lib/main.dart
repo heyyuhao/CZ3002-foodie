@@ -207,29 +207,29 @@ class _ListPageState extends State<ListPage> {
 List getOrders() {
   return [
     Order(
-        orderName: "Introduction to Driving",
-        pickupLocation: "Beginner",
-        deliveryLocation: "0.33",
+        orderName: "CH-2020-10-10-1",
+        pickupLocation: "Canteen 2 Xiao Long Bao",
+        deliveryLocation: "Crescent Hall",
         price: 20,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
-        orderName: "Observation at Junctions",
-        pickupLocation: "Beginner",
+        orderName: "H3-2020-10-10-4",
+        pickupLocation: "Canteen 2 Mini Wok",
         deliveryLocation: "0.33",
         price: 50,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
-        orderName: "Reverse parallel Parking",
-        pickupLocation: "Intermidiate",
+        orderName: "H8-2020-10-10-2",
+        pickupLocation: "Canteen 2 Ayam Penyet",
         deliveryLocation: "0.66",
         price: 30,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
         orderName: "Reversing around the corner",
-        pickupLocation: "Intermidiate",
+        pickupLocation: "Canteen 1 Kim Sam",
         deliveryLocation: "0.66",
         price: 30,
         content:
@@ -261,54 +261,54 @@ List getOrders() {
 List getOrdersToPickUp() {
   return [
     Order(
-        orderName: "Introduction to Driving",
-        pickupLocation: "Beginner",
-        deliveryLocation: "0.33",
+        orderName: "CH-2020-10-10-1",
+        pickupLocation: "Canteen 2 Xiao Long Bao",
+        deliveryLocation: "Crescent Hall",
         price: 20,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
-        orderName: "Observation at Junctions",
-        pickupLocation: "Beginner",
+        orderName: "H3-2020-10-10-4",
+        pickupLocation: "Canteen 2 Mini Wok",
         deliveryLocation: "0.33",
         price: 50,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
-        orderName: "Reverse parallel Parking",
-        pickupLocation: "Intermidiate",
+        orderName: "H8-2020-10-10-2",
+        pickupLocation: "Canteen 2 Ayam Penyet",
         deliveryLocation: "0.66",
         price: 30,
         content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.")
+        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
   ];
 }
 
 List getOrdersToDeliver() {
   return [
     Order(
-        orderName: "Reversing around the corner",
-        pickupLocation: "Intermidiate",
-        deliveryLocation: "0.66",
-        price: 30,
+        orderName: "CH-2020-10-10-3",
+        pickupLocation: "Canteen 11 Japanese",
+        deliveryLocation: "NTU Crescent Hall",
+        price: 20,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
     Order(
-        orderName: "Incorrect Use of Signal",
-        pickupLocation: "Advanced",
-        deliveryLocation: "1.0",
+        orderName: "H4-2020-10-10-5",
+        pickupLocation: "Canteen 11 Si Chuan",
+        deliveryLocation: "NTU Hall 4",
         price: 50,
         content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.")
+        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
   ];
 }
 
 List getOrdersDone() {
   return [
     Order(
-        orderName: "Self Driving Car",
-        pickupLocation: "Advanced",
-        deliveryLocation: "1.0",
+        orderName: "SA-2020-10-10-5",
+        pickupLocation: "North Hill Food Court",
+        deliveryLocation: "NTU Saraca Hall",
         price: 50,
         content:
         "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  ")
