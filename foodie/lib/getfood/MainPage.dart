@@ -57,7 +57,7 @@ final List child = map<Widget>(imgList, (index, i) {
                         '${nameList[index]}',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 30.0,
+                          fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ))),
@@ -85,26 +85,33 @@ class Dish {
 
 final List<Dish> _dishes = <Dish>[
   Dish(
-      name: 'Veg Noodles',
-      price: '3 SGD',
+      name: 'Local Delights',
+      price: '4 SGD',
       calories: '120kcal',
-      imageUrl: 'one.jpg'),
+      imageUrl: 'one.jpg'
+  ),
   Dish(
-      name: 'Beef Fried Rice',
-      price: '4.5 SGD',
+      name: 'Xian Cuisine',
+      price: '5 SGD',
       calories: '350k',
-      imageUrl: '201205-xl-beef-fried-rice.jpg'),
+      imageUrl:'201205-xl-beef-fried-rice.jpg'),
   Dish(
-    name: 'Chicken Fillet Rice',
-    price: '4.5 SGD',
+    name: 'Chicken Rice',
+    price: '5 SGD',
     calories: '400k',
     imageUrl: '92122816-chicken-fillet-with-fried-rice-on-white-plate-.jpg',
   ),
   Dish(
-    name: 'Fish Fillet Rice',
-    price: '5.5 SGD',
+    name: 'Thai Food',
+    price: '5 SGD',
     calories: '330k',
-    imageUrl: 'crispy-fish-Greek-rice-bowls-1.jpg',
+    imageUrl:'crispy-fish-Greek-rice-bowls-1.jpg',
+  ),
+  Dish(
+    name: 'Indian Food',
+    price: '5 SGD',
+    calories: '330k',
+    imageUrl:'crispy-fish-Greek-rice-bowls-1.jpg',
   ),
 ];
 
@@ -187,21 +194,22 @@ class VendorPageState extends State<VendorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: const Text('Canteens'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.shopping_cart,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => OrderListPage()),
-              );
-            },
-          )
-        ],
+        // automaticallyImplyLeading: false,
+        // // title: const Text('Canteens'),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(
+        //       Icons.shopping_cart,
+        //       color: Colors.white,
+        //     ),
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => OrderListPage()),
+        //       );
+        //     },
+        //   )
+        // ],
       ),
       body: Column(
         children: <Widget>[
@@ -272,7 +280,7 @@ class VendorPageState extends State<VendorPage> {
                                       style: TextStyle(fontSize: 16.0),
                                     ),
                                     Text(
-                                      "Price: ${_dishes[index].price}    Calories: 400k",
+                                      "Average: ${_dishes[index].price}    Calories: 400k",
                                       style: TextStyle(fontSize: 13.0),
                                     ),
                                   ],

@@ -12,7 +12,9 @@ class OrderListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF2e282a),
+      margin: EdgeInsets.only(top: 20),
+      padding: EdgeInsets.all(10.0),
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           SimpleFoldingCell.create(

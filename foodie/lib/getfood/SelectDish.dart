@@ -13,28 +13,29 @@ class Dish{
 final List<Dish> _dishes = <Dish>[
   Dish(
       name: 'Veg Noodles',
-      price: '4 SGD',
+      price: '3 SGD',
       calories: '120kcal',
-      imageUrl: 'one.jpg'
-  ),
+      imageUrl: 'one.jpg'),
   Dish(
       name: 'Beef Fried Rice',
-      price: '5 SGD',
+      price: '4.5 SGD',
       calories: '350k',
-      imageUrl:'201205-xl-beef-fried-rice.jpg'),
+      imageUrl: '201205-xl-beef-fried-rice.jpg'),
   Dish(
     name: 'Chicken Fillet Rice',
-    price: '5 SGD',
+    price: '4.5 SGD',
     calories: '400k',
     imageUrl: '92122816-chicken-fillet-with-fried-rice-on-white-plate-.jpg',
   ),
   Dish(
     name: 'Fish Fillet Rice',
-    price: '5 SGD',
+    price: '5.5 SGD',
     calories: '330k',
-    imageUrl:'crispy-fish-Greek-rice-bowls-1.jpg',
+    imageUrl: 'crispy-fish-Greek-rice-bowls-1.jpg',
   ),
 ];
+
+
 
 class SelectDishPage extends StatefulWidget {
   SelectDishPage({Key key, this.title}) : super(key: key);
@@ -125,20 +126,20 @@ class HeroPageState extends State<SelectDishPage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          title: const Text('Canteens'),
+          title: const Text('Food Stalls'),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderPage()),
-                );
-              },
-            )
+            // IconButton(
+            //   icon: Icon(
+            //     Icons.shopping_cart,
+            //     color: Colors.white,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => OrderPage()),
+            //     );
+            //   },
+            // )
           ],
         ),
         body: CustomScrollView(
@@ -249,7 +250,7 @@ class HeroPageState extends State<SelectDishPage>
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: <Widget>[
                                   Text("${_dishes[index].name}",style: TextStyle(fontSize: 16.0),),
-                                  Text("Price: ${_dishes[index].price}    Calories: 400k",style: TextStyle(fontSize: 13.0),),
+                                  Text("Average: ${_dishes[index].price}    Calories: 400k",style: TextStyle(fontSize: 13.0),),
 
                                 ],
                               ),

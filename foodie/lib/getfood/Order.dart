@@ -34,6 +34,23 @@ class _ExampleState extends State<OrderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // appBar: new AppBar(
+        //   title: const Text('Canteens'),
+        //   actions: <Widget>[
+        //     IconButton(
+        //       icon: Icon(
+        //         Icons.shopping_cart,
+        //         color: Colors.white,
+        //       ),
+        //       onPressed: () {
+        //         Navigator.push(
+        //           context,
+        //           MaterialPageRoute(builder: (context) => ()),
+        //         );
+        //       },
+        //     )
+        //   ],
+        // ),
         body: Container(
       // color: Colors.black,
       child: Column(
@@ -52,32 +69,48 @@ class _ExampleState extends State<OrderPage> {
                 width: 500,
                 child: Center(
                   child: Table(
-                    // columnWidths: {
-                    //   0: FixedColumnWidth(150),
-                    //   1: FixedColumnWidth(150)
-                    // },
+                    columnWidths: {
+                      0: FixedColumnWidth(160),
+                      1: FixedColumnWidth(160)
+                    },
                     border: TableBorder(
                         horizontalInside: BorderSide(
-                            width: 0.5,
+                            width: 0.8,
                             color: Colors.grey,
-                            style: BorderStyle.solid)),
+                            style: BorderStyle.solid),
+                      bottom: BorderSide( //                    <--- top side
+                        color: Colors.grey,
+                        width: 0.8,
+                      ),),
+
                     children: [
                       TableRow(children: [
-                        Text('Cell 1',
+                        Text('Stall',
                             textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.normal)),
-                        Text('Cell 1',
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15, color: Colors.grey)),
+                        Text('Item',
                             textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.normal)),
-                        Text('Cell 1',
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15, color: Colors.grey)),
+                        Text('Price',
                             textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.normal)),
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15, color: Colors.grey)),
                       ]),
                       TableRow(children: [
-                        Text('Cell 4'),
-                        Text('Cell 5'),
-                        Text('Cell 6'),
-                      ])
+                        Text('Local Delights',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15)),
+                        Text('Veg Noodles',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15)),
+                        Text('4SGD',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(fontWeight: FontWeight.normal, fontSize:15)),
+                      ]),
+                      // TableRow(children: [
+                      //   Text('Cell 4'),
+                      //   Text('Cell 5'),
+                      //   Text('Cell 6'),
+                      // ])
                     ],
                   ),
                 ),
@@ -86,6 +119,7 @@ class _ExampleState extends State<OrderPage> {
           )),
           Container(
               // margin: EdgeInsets.only(top: 20),
+            padding: EdgeInsets.all(20.0),
               margin: EdgeInsets.only(top: 10),
               child:
                 Form(
@@ -118,7 +152,7 @@ class _ExampleState extends State<OrderPage> {
                           setState(() => dlvry_time = dl_time),
                       validator: (value) => value == null ? 'field required' : null,
                       items:
-                      ['12:00 - 13:30', '18:00 - 19:30', 'Hall 1'].map<DropdownMenuItem<String>>((String value) {
+                      ['12:00 - 13:30', '18:00 - 19:30'].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -126,8 +160,9 @@ class _ExampleState extends State<OrderPage> {
                       }).toList(),
                     ),
                     FlatButton(
-                      child: Text('Pay'),
-                      color: Colors.blue,
+                      child: Text('Pay',
+                          style: TextStyle(color: Colors.white)),
+                      color: Colors.lightBlue,
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           //form is valid, proceed further
