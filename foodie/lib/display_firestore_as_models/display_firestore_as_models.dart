@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:foodie/models/user.dart';
+import 'package:foodie/models/order.dart';
 
 class DisplayDBModelWidget extends StatefulWidget {
   @override
@@ -16,17 +18,14 @@ class _DisplayDBModelWidget extends State<DisplayDBModelWidget> {
           title: Text('Retrieve db'),
         ),
         body: StreamBuilder(
-          stream: Firestore.instance.collection('testings').snapshots(),
+          stream: Firestore.instance.collection('orders').snapshots(),
           builder: (context, snapshot){
             if(snapshot.data == null) return CircularProgressIndicator();
-            print('\n\n\n\n\n\n');
-            // print(snapshot.data.getClass().getName());
-            print(snapshot.data);
+            Order order = Order.fromDocument(snapshot.data.documents[0]);
             return Column(
               children: <Widget>[
-                Text("Here is the data from 'testing > 0 > name&email'"),
-                Text(snapshot.data.documents[0].get("name")),
-                Text(snapshot.data.documents[0].get("email"))
+                // Text(snapshot.data.documents[0].get("deliveryTimeEnd")),
+                Text(order.items[0]['price'].toString()),
               ],
             );
           },

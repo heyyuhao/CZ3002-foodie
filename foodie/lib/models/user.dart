@@ -1,22 +1,44 @@
-class User{
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  String userEmail;
-  int userType;
+class User {
+  String _name;
+  String _email;
+  int _age;
+  Map<String,dynamic> _address;
 
-  User({this.userEmail, this.userType});
+  User(this._name, this._email, this._age, this._address);
 
-  factory User.fromJson(Map<String, dynamic> data){
+  factory User.fromDocument(DocumentSnapshot document) {
     return User(
-      userEmail: data['userEmail'],
-      userType: data['userType'],
+        document.get("name"),
+        document.get("email"),
+        document.get("age"),
+        document.get("address"),
     );
   }
 
-  Map<String, dynamic> toJson(){
-    return{
-      "userEmail": userEmail,
-      "userType": userType
-    };
+  String get name => _name;
+
+  set name(String value) {
+    _name = value;
+  }
+
+  String get email => _email;
+
+  set email(String value) {
+    _email = value;
+  }
+
+  int get age => _age;
+
+  set age(int value) {
+    _age = value;
+  }
+
+  Map<String, dynamic> get address => _address;
+
+  set address(Map<String, dynamic> value) {
+    _address = value;
   }
 
 }
