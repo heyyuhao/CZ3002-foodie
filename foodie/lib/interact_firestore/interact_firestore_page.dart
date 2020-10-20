@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:foodie/display_firestore_as_models/display_firestore_as_models.dart';
+import 'package:foodie/models/user.dart';
 
 class InteractDBWidget extends StatefulWidget {
   @override
@@ -32,25 +32,14 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                 SizedBox(height: 40),
                 RaisedButton(
                   onPressed: () {
-                    final firestoreInstance = Firestore.instance;
-                    firestoreInstance.collection("testings").add(
-                        {
-                          "name" : "john",
-                          "age" : 50,
-                          "email" : "example@example.com",
-                          "address" : {
-                            "street" : "street 24",
-                            "city" : "new york"
-                          }
-                        }).then((value){
-                      print(value.documentID);
-                    });
+                    User user = new User("email1", -1);
+                    add_user_to_firestore(user);
                   },
                   color: Colors.deepPurple,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Add to DB',
+                      'Add User -1',
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                   ),
@@ -61,19 +50,13 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                 SizedBox(height: 40),
                 RaisedButton(
                   onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return DisplayDBModelWidget();
-                        },
-                      ),
-                    );
+                    update_user_by_fields_in_firestore("pfOc90lJSibTbsgQn04v", {"address": {"city": "singapore1", "street": "street1"}}, collectionPath:"testings");
                   },
-                  color: Colors.yellow,
+                  color: Colors.deepPurple,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      'Retrieve from DB',
+                      'Update testing',
                       style: TextStyle(fontSize: 25, color: Colors.white),
                     ),
                   ),
@@ -82,6 +65,38 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                       borderRadius: BorderRadius.circular(40)),
                 ),
                 SizedBox(height: 40),
+                // RaisedButton(
+                //   onPressed: () {
+                //     Navigator.of(context).push(
+                //       MaterialPageRoute(
+                //         builder: (context) {
+                //           return DisplayDBModelWidget();
+                //         },
+                //       ),
+                //     );
+                //   },
+                //   color: Colors.yellow,
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(8.0),
+                //     child: Text(
+                //       'Retrieve from DB',
+                //       style: TextStyle(fontSize: 25, color: Colors.white),
+                //     ),
+                //   ),
+                //   elevation: 5,
+                //   shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(40)),
+                // ),
+                // SizedBox(height: 40),
+                RaisedButton(
+                  onPressed: () {
+                    get_user_documentsnapshot_by_documentID("0d6ubxYogJfX81TH5flO").then((documentSnapshot){
+                      User user = User.fromDocument(documentSnapshot);
+                      print(user.toMap());
+                    });
+                  },
+                  child: Text('Get data'),
+                )
               ],
             ),
           ),
@@ -92,22 +107,6 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
 }
 
 
-
-
-
-// StreamBuilder(
-//           stream: Firestore.instance.collection('testings').snapshots(),
-//           builder: (context, snapshot){
-//             if(snapshot.data == null) return CircularProgressIndicator();
-//             return Column(
-//               children: <Widget>[
-//                 Text("Here is the data from 'testing > 0 > name&email'"),
-//                 Text(snapshot.data.documents[0].get("name")),
-//                 Text(snapshot.data.documents[0].get("email"))
-//               ],
-//             );
-//           },
-//         ),
 
 
 
