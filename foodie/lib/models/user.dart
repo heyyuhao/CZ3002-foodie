@@ -67,7 +67,6 @@ Future<DocumentSnapshot> get_user_documentsnapshot_by_documentID(String document
       .get();
 }
 
-
 class GetUserEmailByDocumentIDWidget extends StatelessWidget {
   final String documentID;
   final String collectionPath = "users";
