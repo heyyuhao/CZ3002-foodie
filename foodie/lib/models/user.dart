@@ -1,44 +1,127 @@
+import 'package:flutter/material.dart';
+
+// Import the firebase_core and cloud_firestore plugin
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  String _name;
-  String _email;
-  int _age;
-  Map<String,dynamic> _address;
+  String _userEmail;
+  int _userType;
 
-  User(this._name, this._email, this._age, this._address);
+  User(this._userEmail, this._userType);
 
   factory User.fromDocument(DocumentSnapshot document) {
     return User(
-        document.get("name"),
-        document.get("email"),
-        document.get("age"),
-        document.get("address"),
+        document.get("userEmail"),
+        document.get("userType"),
     );
   }
 
-  String get name => _name;
-
-  set name(String value) {
-    _name = value;
+  Map<String, dynamic> toMap() {
+    return {
+      'userEmail': this._userEmail,
+      'userType': this._userType,
+    };
   }
 
-  String get email => _email;
+  String get userEmail => _userEmail;
 
-  set email(String value) {
-    _email = value;
+  set userEmail(String value) {
+    _userEmail = value;
   }
 
-  int get age => _age;
+  int get userType => _userType;
 
-  set age(int value) {
-    _age = value;
+  set userType(int value) {
+    _userType = value;
   }
 
-  Map<String, dynamic> get address => _address;
+}
 
-  set address(Map<String, dynamic> value) {
-    _address = value;
+add_user_to_firestore(User user, {String collectionPath = "users"}){
+  Firestore.instance
+      .collection(collectionPath)
+      .add(user.toMap())
+      .then((value){print("User ${user.userEmail} added");})
+      .catchError((error) => print("Failed to add user: $error"));
+}
+
+update_user_by_fields_in_firestore(String documentID, Map<String, dynamic> updates, {String collectionPath = "users"}) {
+  FirebaseFirestore.instance
+      .collection(collectionPath)
+      .doc(documentID)
+      .update(updates)
+      .then((value) => print("User Updated"))
+      .catchError((error) => print("Failed to update user: $error"));
+}
+
+update_user_by_instance_in_firestore(String documentID, User user, {String collectionPath = "users"}) {
+  Map<String, dynamic> updates = user.toMap();
+  update_user_by_fields_in_firestore(documentID, updates, collectionPath:collectionPath);
+}
+
+Future<DocumentSnapshot> get_user_documentsnapshot_by_documentID(String documentID, {String collectionPath = "users"}) {
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .doc(documentID)
+      .get();
+}
+
+
+class GetUserEmailByDocumentIDWidget extends StatelessWidget {
+  final String documentID;
+  final String collectionPath = "users";
+
+  GetUserEmailByDocumentIDWidget(this.documentID);
+
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection(collectionPath);
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(documentID).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          User user = User.fromDocument(snapshot.data);
+          return Text("${user.userEmail}");
+        }
+
+        return Text("loading");
+      },
+    );
   }
+}
 
+class GetUserEmailByDocumentPathWidget extends StatelessWidget {
+  final String documentPath;
+
+  GetUserEmailByDocumentPathWidget(this.documentPath);
+
+  @override
+  Widget build(BuildContext context) {
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: Firestore.instance.doc(documentPath).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
+        if (snapshot.hasError) {
+          return Text("Something went wrong");
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          User user = User.fromDocument(snapshot.data);
+          return Text("${user.userEmail}");
+        }
+
+        return Text("loading");
+      },
+    );
+  }
 }
