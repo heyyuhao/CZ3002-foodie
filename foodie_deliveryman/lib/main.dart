@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:foodie_deliveryman/model/order.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
+import 'package:foodie_deliveryman/orderBody.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -32,15 +37,14 @@ class _ListPageState extends State<ListPage> {
         labelStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
     new TabItem(Icons.assignment_returned, "To Deliver", Colors.orange,
         labelStyle:
-        TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+            TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
     new TabItem(Icons.assignment_turned_in, "Done", Colors.green,
         labelStyle:
-        TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+            TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
   ]);
 
   int selectedPos = 0;
   double bottomNavBarHeight = 60;
-
   CircularBottomNavigationController _navigationController;
 
   @override
@@ -51,112 +55,6 @@ class _ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
-    ListTile makeListTile(Order order) => ListTile(
-      contentPadding:
-      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      title: Text(
-        order.orderName,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-      ),
-
-      subtitle: Row(
-        children: (selectedPos == 0) ?
-        <Widget>[Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text("Pickup Location: ${order.pickupLocation}",
-                  style: TextStyle(color: Colors.white))),
-        )] : (selectedPos == 1) ?
-        <Widget>[Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text("Delivery Location: ${order.deliveryLocation}",
-                  style: TextStyle(color: Colors.white))),
-        )] : <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text("Pickup Location: ${order.pickupLocation}",
-                    style: TextStyle(color: Colors.white))),
-          ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: EdgeInsets.only(top: 5.0),
-              child: Icon(Icons.keyboard_arrow_right,
-                  color: Colors.white, size: 40.0),
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text("Delivery Location: ${order.deliveryLocation}",
-                    style: TextStyle(color: Colors.white))),
-          )
-        ],
-      ),
-      trailing: (selectedPos != 2) ?
-      IconButton(
-          icon: Icon(
-            Icons.check,
-            color: Colors.green,
-            size: 30.0,
-          ),
-          onPressed: () {
-            print('order change delivery state');
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => DetailPage(order: order)));
-          }) :
-      null,
-      // onTap: () {
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => DetailPage(order: order)));
-      // },
-    );
-
-    Card makeCard(Order order) => Card(
-      elevation: 8.0,
-      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-      child: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-        child: makeListTile(order),
-      ),
-    );
-
-    Widget ordersBody() {
-      List ordersInCurrentState;
-      switch (selectedPos) {
-        case 0:
-          ordersInCurrentState = getOrdersToPickUp();
-          break;
-        case 1:
-          ordersInCurrentState = getOrdersToDeliver();
-          break;
-        case 2:
-          ordersInCurrentState = getOrdersDone();
-          break;
-      }
-      return Container(
-        // decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, 1.0)),
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: ordersInCurrentState.length,
-          itemBuilder: (BuildContext context, int index) {
-            return makeCard(ordersInCurrentState[index]);
-          },
-        ),
-      );
-    }
-
     Widget topBar() {
       String title;
       switch (selectedPos) {
@@ -198,119 +96,8 @@ class _ListPageState extends State<ListPage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topBar(),
-      body: ordersBody(),
+      body: new OrderBody(selectedPos),
       bottomNavigationBar: bottomNav(),
     );
   }
-}
-
-List getOrders() {
-  return [
-    Order(
-        orderName: "CH-2020-10-10-1",
-        pickupLocation: "Canteen 2 Xiao Long Bao",
-        deliveryLocation: "Crescent Hall",
-        price: 20,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "H3-2020-10-10-4",
-        pickupLocation: "Canteen 2 Mini Wok",
-        deliveryLocation: "0.33",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "H8-2020-10-10-2",
-        pickupLocation: "Canteen 2 Ayam Penyet",
-        deliveryLocation: "0.66",
-        price: 30,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "Reversing around the corner",
-        pickupLocation: "Canteen 1 Kim Sam",
-        deliveryLocation: "0.66",
-        price: 30,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "Incorrect Use of Signal",
-        pickupLocation: "Advanced",
-        deliveryLocation: "1.0",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "Engine Challenges",
-        pickupLocation: "Advanced",
-        deliveryLocation: "1.0",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "Self Driving Car",
-        pickupLocation: "Advanced",
-        deliveryLocation: "1.0",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  ")
-  ];
-}
-
-List getOrdersToPickUp() {
-  return [
-    Order(
-        orderName: "CH-2020-10-10-1",
-        pickupLocation: "Canteen 2 Xiao Long Bao",
-        deliveryLocation: "Crescent Hall",
-        price: 20,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "H3-2020-10-10-4",
-        pickupLocation: "Canteen 2 Mini Wok",
-        deliveryLocation: "0.33",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "H8-2020-10-10-2",
-        pickupLocation: "Canteen 2 Ayam Penyet",
-        deliveryLocation: "0.66",
-        price: 30,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-  ];
-}
-
-List getOrdersToDeliver() {
-  return [
-    Order(
-        orderName: "CH-2020-10-10-3",
-        pickupLocation: "Canteen 11 Japanese",
-        deliveryLocation: "NTU Crescent Hall",
-        price: 20,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-    Order(
-        orderName: "H4-2020-10-10-5",
-        pickupLocation: "Canteen 11 Si Chuan",
-        deliveryLocation: "NTU Hall 4",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed."),
-  ];
-}
-
-List getOrdersDone() {
-  return [
-    Order(
-        orderName: "SA-2020-10-10-5",
-        pickupLocation: "North Hill Food Court",
-        deliveryLocation: "NTU Saraca Hall",
-        price: 50,
-        content:
-        "Start by taking a couple of minutes to read the info in this section. Launch your app and click on the Settings menu.  While on the settings page, click the Save button.  You should see a circular progress indicator display in the middle of the page and the user interface elements cannot be clicked due to the modal barrier that is constructed.  ")
-  ];
 }
