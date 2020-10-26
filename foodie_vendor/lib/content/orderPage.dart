@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie_vendor/model/order.dart';
-import 'package:foodie_vendor/keys.dart';
+import 'package:foodie_vendor/keys/keys.dart';
 
-class OrderBody extends StatelessWidget {
+class OrderPage extends StatelessWidget {
   ListTile makeVendorOrderList(BuildContext context, Order order) {
     if (order.status == OrderStatus.Rejected.index) {
       return ListTile(
