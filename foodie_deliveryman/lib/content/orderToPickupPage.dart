@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie_deliveryman/model/order.dart';
 
-class OrderBody extends StatelessWidget {
-  OrderBody(this.orderStatus);
-  final int orderStatus;
-
+class OrderToPickupPage extends StatelessWidget {
   ListTile makeListTile(Order order) => ListTile(
     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
     title: Text(
@@ -13,57 +10,18 @@ class OrderBody extends StatelessWidget {
       style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
     ),
     subtitle: Row(
-      children: (orderStatus == 0)
-          ? <Widget>[
+      children: <Widget>[
         Expanded(
           flex: 5,
           child: Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: Text(
                   "Pickup Location: ${order.restaurantName} @ ${order.restaurantLocation}",
-                  style: TextStyle(color: Colors.white))),
-        )
-      ]
-          : (orderStatus == 1)
-          ? <Widget>[
-        Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                  "Delivery Location: ${order.deliveryPoint}",
-                  style: TextStyle(color: Colors.white))),
-        )
-      ]
-          : <Widget>[
-        Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                  "Pickup Location: ${order.restaurantName} @ ${order.restaurantLocation}",
-                  style: TextStyle(color: Colors.white))),
-        ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: EdgeInsets.only(top: 5.0),
-            child: Icon(Icons.keyboard_arrow_right,
-                color: Colors.white, size: 40.0),
-          ),
-        ),
-        Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                  "Delivery Location: ${order.deliveryPoint}",
                   style: TextStyle(color: Colors.white))),
         )
       ],
     ),
-    trailing: (orderStatus != 2)
-        ? IconButton(
+    trailing: IconButton(
         icon: Icon(
           Icons.check,
           color: Colors.green,
@@ -71,8 +29,7 @@ class OrderBody extends StatelessWidget {
         ),
         onPressed: () {
           print('order change delivery state');
-        })
-        : null,
+        }),
     onTap: () {
       print('this order is tapped');
     },
@@ -89,9 +46,7 @@ class OrderBody extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: (orderStatus == 0)
-            ? getOrdersToPickUp()
-            : (orderStatus == 1) ? getOrdersToDeliver() : getOrdersDone(),
+        future: getOrdersToPickUp(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));
@@ -99,10 +54,10 @@ class OrderBody extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             List<DocumentSnapshot> orderDocuments = snapshot.data.docs;
-            print('print orders done in main page');
+            print('print orders to pick up in main page');
             List<Order> orders = [];
             orderDocuments.forEach((element) {
-              printOrderDocument(element);
+              // printOrderDocument(element);
               orders.add(getOrderFromDocument(element));
             });
             return Container(
