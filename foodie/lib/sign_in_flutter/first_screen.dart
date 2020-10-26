@@ -93,7 +93,7 @@ class FirstScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Interact DB',
+                    'Testing DB (will removed later)',
                     style: TextStyle(fontSize: 25, color: Colors.white),
                   ),
                 ),
@@ -101,29 +101,6 @@ class FirstScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
               ),
-              SizedBox(height: 40),
-              RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return (VendorPage());
-                      },
-                    ),
-                  );
-                },
-                color: Colors.blueGrey,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Get Food',
-                    style: TextStyle(fontSize: 25, color: Colors.white),
-                  ),
-                ),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
-              )
             ],
           ),
         ),

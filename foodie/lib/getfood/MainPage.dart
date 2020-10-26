@@ -1,4 +1,9 @@
 import "package:flutter/material.dart";
+
+import 'package:foodie/sign_in_flutter/login_page.dart';
+import 'package:foodie/sign_in_flutter/sign_in.dart';
+import 'package:foodie/sign_in_flutter/first_screen.dart';
+
 import 'package:foodie/getfood/payment1.dart';
 
 import 'package:flutter/material.dart';
@@ -115,15 +120,15 @@ final List<Dish> _dishes = <Dish>[
   ),
 ];
 
-class VendorPage extends StatefulWidget {
-  VendorPage({Key key, this.title}) : super(key: key);
+class MainPage extends StatefulWidget {
+  MainPage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  VendorPageState createState() => new VendorPageState();
+  MainPageState createState() => new MainPageState();
 }
 
-class VendorPageState extends State<VendorPage> {
+class MainPageState extends State<MainPage> {
   List<String> itemData = ["one", "two", "three", "four"];
 
   Widget _dialogBuilder(BuildContext context, Dish dish) {
@@ -213,6 +218,41 @@ class VendorPageState extends State<VendorPage> {
       ),
       body: Column(
         children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                  // onTap: () => print("redirect to user info"),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ((FirstScreen()));
+                        },
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      imageUrl,
+                    ),
+                    radius: 20,
+                    backgroundColor: Colors.transparent,
+                  ),
+              ),
+              Container(
+                child: Text('Hi ${name}', textAlign: TextAlign.center),
+              ),
+              InkWell(
+                onTap: () => print("redirect to user order history"),
+                child: Icon(
+                  Icons.history,
+                  color: Colors.grey,
+                  size: 40.0,
+                ),
+              ),
+            ],
+          ),
           new Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
               child: CarouselSlider(
