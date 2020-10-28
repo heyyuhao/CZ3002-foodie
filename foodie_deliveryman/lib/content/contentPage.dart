@@ -29,7 +29,7 @@ class _ContentPageState extends State<ContentPage> {
         TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
   ]);
 
-  int selectedPos = 0;
+  int selectedPos = 3;
   double bottomNavBarHeight = 60;
   CircularBottomNavigationController _navigationController;
 

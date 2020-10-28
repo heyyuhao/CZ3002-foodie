@@ -48,11 +48,6 @@ Future<String> signInWithGoogle() async {
     print('name: ' + name);
     print('email: ' + email );
 
-    // Only taking the first part of the name, i.e., First Name
-    if (name.contains(" ")) {
-      name = name.substring(0, name.indexOf(" "));
-    }
-
     return '$user';
   }
 
