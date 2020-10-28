@@ -47,6 +47,7 @@ class OrderItem {
 }
 
 class Order {
+  String _orderID;
   String _orderName;
   String _deliveryPoint;
   DateTime _deliveryTimeStart;
@@ -60,16 +61,16 @@ class Order {
   String _userID;
 
   Order(
-    String deliveryPoint,
-    DateTime deliveryTimeStart,
-    DateTime deliveryTimeEnd,
-    DateTime orderTime,
-    String restaurantName,
-    String restaurantLocation,
-    List<OrderItem> items,
-    int status,
-    String userID,
-  ) {
+      String deliveryPoint,
+      DateTime deliveryTimeStart,
+      DateTime deliveryTimeEnd,
+      DateTime orderTime,
+      String restaurantName,
+      String restaurantLocation,
+      List<OrderItem> items,
+      int status,
+      String userID,
+      ) {
     this._orderName = deliveryPoint + '-' + userID;
     this._deliveryPoint = deliveryPoint;
     this._deliveryTimeStart = deliveryTimeStart;
@@ -115,6 +116,12 @@ class Order {
       'totalPrice': this._totalPrice,
       'userID': this._userID,
     };
+  }
+
+
+  String get orderID => _orderID;
+  set orderID(String value) {
+    _orderID = value;
   }
 
   String get orderName => _orderName;
@@ -222,6 +229,14 @@ Future<void> printOrdersToPickUp({String collectionPath = "orders"}) {
   });
 }
 
+Future<void> pickUpOrder(String orderID, {String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance.collection(collectionPath)
+      .doc(orderID)
+      .update({'status': OrderStatus.Delivering.index})
+      .then((value) => print("Order Status Updated"))
+      .catchError((error) => print("Failed to update order: $error"));
+}
+
 Future<QuerySnapshot> getOrdersToDeliver({String collectionPath = "orders"}) {
   return FirebaseFirestore.instance
       .collection(collectionPath)
@@ -236,6 +251,14 @@ Future<void> printOrdersToDeliver({String collectionPath = "orders"}) {
       print(doc["orderName"]);
     })
   });
+}
+
+Future<void> deliveredOrder(String orderID, {String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance.collection(collectionPath)
+      .doc(orderID)
+      .update({'status': OrderStatus.Delivered.index})
+      .then((value) => print("Order Status Updated"))
+      .catchError((error) => print("Failed to update order: $error"));
 }
 
 Future<QuerySnapshot> getOrdersDone({String collectionPath = "orders"}) {
@@ -254,7 +277,39 @@ Future<void> printOrdersDone({String collectionPath = "orders"}) {
   });
 }
 
+Future<QuerySnapshot> getOrdersToConfirm({String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .where('status', isEqualTo: OrderStatus.Created.index)
+      .get();
+}
+
+Future<void> printOrdersToConfirm({String collectionPath = "orders"}) {
+  print('Getting data...');
+  getOrdersToConfirm().then((QuerySnapshot querySnapshot) => {
+    querySnapshot.docs.forEach((doc) {
+      print(doc["orderName"]);
+    })
+  });
+}
+
+Future<QuerySnapshot> getOrdersForVendor({String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .where('status', whereIn: [OrderStatus.Created.index, OrderStatus.Confirmed.index, OrderStatus.Rejected.index])
+      .get();
+}
+
+Future<void> confirmOrder(String orderID, {String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance.collection(collectionPath)
+      .doc(orderID)
+      .update({'status': OrderStatus.Confirmed.index})
+      .then((value) => print("Order Status Updated"))
+      .catchError((error) => print("Failed to update order: $error"));
+}
+
 printOrderDocument(DocumentSnapshot orderDocument) {
+  print('orderID: ' + orderDocument.reference.id);
   print('orderName: '+ orderDocument.data()['orderName']);
   print('deliveryPoint: '+ orderDocument.data()['deliveryPoint']);
   print('deliveryTimeStart: '+ orderDocument.data()['deliveryTimeStart'].toString());
@@ -268,6 +323,7 @@ printOrderDocument(DocumentSnapshot orderDocument) {
 }
 
 Order getOrderFromDocument(DocumentSnapshot orderDocument) {
+  String orderID = orderDocument.reference.id;
   String orderName = orderDocument.data()['orderName'];
   String deliveryPoint = orderDocument.data()['deliveryPoint'];
   DateTime deliveryTimeStart = DateTime.parse(orderDocument.data()['deliveryTimeStart'].toDate().toString());
@@ -284,6 +340,7 @@ Order getOrderFromDocument(DocumentSnapshot orderDocument) {
   String userID = orderDocument.data()['userID'];
 
   Order order = new Order(deliveryPoint, deliveryTimeStart, deliveryTimeEnd, orderTime, restaurantName, restaurantLocation, items, status, userID);
+  order.orderID = orderID;
   order.orderName = orderName;
 
   return order;
