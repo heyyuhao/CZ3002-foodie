@@ -170,7 +170,7 @@ class _ExampleState extends State<OrderPage> {
                             Toast.show("Payment Success", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>VendorPage()),
+                              MaterialPageRoute(builder: (context) =>MainPage()),
                             );
                         } else {
                           setState(() {
