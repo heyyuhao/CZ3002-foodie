@@ -280,7 +280,7 @@ Future<void> printOrdersToConfirm({String collectionPath = "orders"}) {
 Future<QuerySnapshot> getOrdersForVendor({String collectionPath = "orders"}) {
   return FirebaseFirestore.instance
       .collection(collectionPath)
-      .where('status', whereIn: [OrderStatus.Created.index, OrderStatus.Confirmed.index, OrderStatus.Rejected.index])
+      .where('status', whereIn: [OrderStatus.Created.index, OrderStatus.Confirmed.index])
       .get();
 }
 
@@ -288,6 +288,14 @@ Future<void> confirmOrder(String orderID, {String collectionPath = "orders"}) {
   return FirebaseFirestore.instance.collection(collectionPath)
       .doc(orderID)
       .update({'status': OrderStatus.Confirmed.index})
+      .then((value) => print("Order Status Updated"))
+      .catchError((error) => print("Failed to update order: $error"));
+}
+
+Future<void> rejectOrder(String orderID, {String collectionPath = "orders"}) {
+  return FirebaseFirestore.instance.collection(collectionPath)
+      .doc(orderID)
+      .update({'status': OrderStatus.Rejected.index})
       .then((value) => print("Order Status Updated"))
       .catchError((error) => print("Failed to update order: $error"));
 }

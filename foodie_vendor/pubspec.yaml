@@ -39,6 +39,7 @@ dependencies:
   toast: ^0.1.5
   google_fonts: 1.1.0
   flutter_webview_plugin: ^0.3.0+2
+  dots_indicator: ^1.2.0
 
 dev_dependencies:
   flutter_test:
