@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodie_vendor/model/restaurant.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:foodie_vendor/model/vendor.dart';
 
 // Add these three variables to store the info
 // retrieved from the FirebaseUser
+Vendor vendor;
+Restaurant restaurant;
 String userID;
 String name;
 String email;
@@ -12,7 +17,6 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
 Future<String> signInWithGoogle() async {
-  // await Firebase.initializeApp();
 
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
@@ -49,10 +53,27 @@ Future<String> signInWithGoogle() async {
     print('name: ' + name);
     print('email: ' + email );
 
-    // Only taking the first part of the name, i.e., First Name
-    if (name.contains(" ")) {
-      name = name.substring(0, name.indexOf(" "));
+    // fetch the vendor
+    List<DocumentSnapshot> vendorDocuments = (await getVendorByEmail(email)).docs;
+    if (vendorDocuments.length == 0) {
+      // no such vendor
+      print('no such vendor');
+      return null;
     }
+    DocumentSnapshot vendorDocument = vendorDocuments[0];
+    DocumentReference vendorDocumentReference = vendorDocument.reference;
+    vendor = getVendorFromDocument(vendorDocument);
+
+
+    // fetch the restaurant
+    List<DocumentSnapshot> restaurantDocuments = (await getRestaurantByVendor(vendorDocumentReference)).docs;
+    if (restaurantDocuments.length == 0) {
+      // no restaurant for this vendor, don't login
+      print('no restaurant for vendor');
+      return null;
+    }
+    DocumentSnapshot restaurantDocument = restaurantDocuments[0];
+    restaurant = await getRestaurantFromDocument(restaurantDocument);
 
     return '$user';
   }

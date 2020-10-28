@@ -56,6 +56,21 @@ class RestaurantPage extends StatelessWidget {
                     color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 20),
+              Text(
+                'Restaurant Name',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
+              Text(
+                restaurant.name,
+                style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 40),
               RaisedButton(
                 onPressed: () {
