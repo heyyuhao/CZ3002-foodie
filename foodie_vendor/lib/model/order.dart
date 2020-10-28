@@ -183,104 +183,15 @@ class Order {
   }
 }
 
-Future<void> addOrder(Order order, {String collectionPath = "orders"}) {
-  print('adding orders to firebase');
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .add(order.toMap())
-      .then((value) {
-    print("Order added successfully");
-  }).catchError((error) => print("Failed to add order: $error"));
-}
-
-Future<QuerySnapshot> getOrdersByUser(
-    String userID,
+Future<QuerySnapshot> getOrdersForVendor(
+    String restaurantName,
+    String restaurantLocation,
     {String collectionPath = "orders"}) {
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .where('userID', isEqualTo: userID)
-      .get();
-}
-
-Future<void> printGetOrdersByUser(
-    String userID,
-    {String collectionPath = "orders"}) {
-  print('Getting data...');
-  getOrdersByUser(userID).then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["orderName"]);
-    })
-  });
-}
-
-Future<QuerySnapshot> getOrdersToPickUp({String collectionPath = "orders"}) {
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .where('status', isEqualTo: OrderStatus.Confirmed.index)
-      .get();
-}
-
-Future<void> printOrdersToPickUp({String collectionPath = "orders"}) {
-  print('Getting data...');
-  getOrdersToPickUp().then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["orderName"]);
-    })
-  });
-}
-
-Future<QuerySnapshot> getOrdersToDeliver({String collectionPath = "orders"}) {
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .where('status', isEqualTo: OrderStatus.Delivering.index)
-      .get();
-}
-
-Future<void> printOrdersToDeliver({String collectionPath = "orders"}) {
-  print('Getting data...');
-  getOrdersToDeliver().then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["orderName"]);
-    })
-  });
-}
-
-Future<QuerySnapshot> getOrdersDone({String collectionPath = "orders"}) {
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .where('status', isEqualTo: OrderStatus.Delivered.index)
-      .get();
-}
-
-Future<void> printOrdersDone({String collectionPath = "orders"}) {
-  print('Getting data...');
-  getOrdersDone().then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["orderName"]);
-    })
-  });
-}
-
-Future<QuerySnapshot> getOrdersToConfirm({String collectionPath = "orders"}) {
-  return FirebaseFirestore.instance
-      .collection(collectionPath)
-      .where('status', isEqualTo: OrderStatus.Created.index)
-      .get();
-}
-
-Future<void> printOrdersToConfirm({String collectionPath = "orders"}) {
-  print('Getting data...');
-  getOrdersToConfirm().then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["orderName"]);
-    })
-  });
-}
-
-Future<QuerySnapshot> getOrdersForVendor({String collectionPath = "orders"}) {
   return FirebaseFirestore.instance
       .collection(collectionPath)
       .where('status', whereIn: [OrderStatus.Created.index, OrderStatus.Confirmed.index])
+      .where('restaurantName', isEqualTo: restaurantName)
+      .where('restaurantLocation', isEqualTo: restaurantLocation)
       .get();
 }
 
@@ -300,7 +211,7 @@ Future<void> rejectOrder(String orderID, {String collectionPath = "orders"}) {
       .catchError((error) => print("Failed to update order: $error"));
 }
 
-printOrderDocument(DocumentSnapshot orderDocument) {
+void printOrderDocument(DocumentSnapshot orderDocument) {
   print('orderID: ' + orderDocument.reference.id);
   print('orderName: '+ orderDocument.data()['orderName']);
   print('deliveryPoint: '+ orderDocument.data()['deliveryPoint']);
