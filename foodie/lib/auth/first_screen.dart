@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:foodie/sign_in_flutter/login_page.dart';
-import 'package:foodie/sign_in_flutter/sign_in.dart';
+import 'package:foodie/auth/loginPage.dart';
+import 'package:foodie/auth/googleAuth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodie/interact_firestore/interact_firestore_page.dart';
 import 'package:foodie/getfood/MainPage.dart';

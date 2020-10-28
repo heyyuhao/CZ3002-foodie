@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:foodie/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 // Add these three variables to store the info
@@ -7,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 String name;
 String email;
 String imageUrl;
+String userID;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -23,13 +26,13 @@ Future<String> signInWithGoogle() async {
   );
 
   final UserCredential authResult = await _auth.signInWithCredential(credential);
-  final User user = authResult.user;
+  final user = authResult.user;
 
   if (user != null) {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
     print('signInWithGoogle succeeded: $user');
@@ -44,10 +47,15 @@ Future<String> signInWithGoogle() async {
     email = user.email;
     imageUrl = user.photoURL;
 
-    // Only taking the first part of the name, i.e., First Name
-    if (name.contains(" ")) {
-      name = name.substring(0, name.indexOf(" "));
+    List<DocumentSnapshot> clientDocuments = (await getClientByEmail(email)).docs;
+    if (clientDocuments.length == 0) {
+      // no such client
+      print('no such vendor');
+      // TODO: Add this client into database
+      return null;
     }
+    DocumentSnapshot clientDocument = clientDocuments[0];
+    userID = clientDocument.reference.id;
 
     return '$user';
   }

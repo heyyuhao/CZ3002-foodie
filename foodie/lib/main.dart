@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodie/sign_in_flutter/login_page.dart';
+import 'package:foodie/auth/loginPage.dart';
 
 void main() => runApp(MyApp());
 

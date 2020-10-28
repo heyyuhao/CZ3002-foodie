@@ -4,6 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+enum UserType {
+  Client,
+  Vendor,
+  Deliveryman
+}
+
+
+
 class User {
   String _userEmail;
   int _userType;
@@ -123,4 +132,16 @@ class GetUserEmailByDocumentPathWidget extends StatelessWidget {
       },
     );
   }
+}
+
+
+
+Future<QuerySnapshot> getClientByEmail(
+    String email,
+    {String collectionPath = "users"}) {
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .where('userEmail', isEqualTo: email)
+      .where('userType', isEqualTo: UserType.Client.index)
+      .get();
 }
