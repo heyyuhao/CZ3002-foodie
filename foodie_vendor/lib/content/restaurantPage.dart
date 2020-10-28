@@ -135,7 +135,7 @@ class RestaurantPage extends StatelessWidget {
                             Text(
                               'Name:',
                               style: TextStyle(
-                                  fontSize: 15,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
@@ -143,7 +143,7 @@ class RestaurantPage extends StatelessWidget {
                             Text(
                               name,
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 14,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -154,7 +154,7 @@ class RestaurantPage extends StatelessWidget {
                       Text(
                         email,
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
@@ -162,32 +162,34 @@ class RestaurantPage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(height: 5),
-              RaisedButton(
-                onPressed: () {
-                  signOutGoogle();
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
-                },
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(0),
-                  child: Text(
-                    'Sign Out',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
+              ButtonTheme(
+                minWidth: 10.0,
+                height: 20.0,
+                child: RaisedButton(
+                  onPressed: () {
+                    signOutGoogle();
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return LoginPage();}), ModalRoute.withName('/'));
+                  },
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Text(
+                      'Sign Out',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
                   ),
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40)),
                 ),
-                elevation: 5,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40)),
               ),
-              SizedBox(height: 20),
               Row(
                 children: <Widget>[
                   SizedBox(width: 20),
                   Text(
                     'Restaurant:',
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
@@ -195,7 +197,7 @@ class RestaurantPage extends StatelessWidget {
                   Text(
                     restaurant.name,
                     style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: Colors.white,
                         fontWeight: FontWeight.bold),
                   ),
@@ -204,7 +206,69 @@ class RestaurantPage extends StatelessWidget {
                       icon: Icon(
                         Icons.edit,
                         color: Colors.blue,
-                        size: 20.0,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        print('order change delivery state');
+                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                            title: Text(restaurant.name),
+                            content: Text("Edit this restaurant Name?\n(Tap outside to dismiss)"),
+                            actions: <Widget>[
+                              new FlatButton(
+                                child: new Text(
+                                  "No",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              new FlatButton(
+                                child: new Text(
+                                  "Yes",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  print("Picked up order");
+                                  // await confirmOrder(order.orderID);
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ])
+                        );
+                      }),
+                ],
+              ),
+              Row(
+                children: <Widget>[
+                  SizedBox(width: 20),
+                  Text(
+                    'Location:',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    restaurant.location,
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(width: 10),
+                  IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.blue,
+                        size: 20,
                       ),
                       onPressed: () {
                         print('order change delivery state');
@@ -255,8 +319,9 @@ class RestaurantPage extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 10),
               Container(
-                height: 270,
+                height: 240,
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
