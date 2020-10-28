@@ -93,10 +93,10 @@ Future<Restaurant> getRestaurantFromDocument(DocumentSnapshot restaurantDocument
 
 Dish getDishFromDocument(DocumentSnapshot dishDocument) {
   String dishID = dishDocument.reference.id;
-  String picture = dishDocument.data()['picture'];
   String name = dishDocument.data()['name'];
+  String picture = dishDocument.data()['picture'];
   double price = dishDocument.data()['price'];
 
-  Dish dish = new Dish(dishID, picture, name, price);
+  Dish dish = new Dish(dishID,name,  picture, price);
   return dish;
 }
