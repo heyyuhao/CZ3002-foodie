@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_deliveryman/model/order.dart';
 
 class OrderDonePage extends StatelessWidget {
-  ListTile makeListTile(Order order) => ListTile(
+  ListTile makeListTile(BuildContext context, Order order) => ListTile(
     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
     title: Text(
       order.orderName,
@@ -43,12 +44,12 @@ class OrderDonePage extends StatelessWidget {
     },
   );
 
-  Card makeCard(Order order) => Card(
+  Card makeCard(BuildContext context, Order order) => Card(
     elevation: 8.0,
     margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
     child: Container(
       decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-      child: makeListTile(order),
+      child: makeListTile(context, order),
     ),
   );
 
@@ -73,12 +74,22 @@ class OrderDonePage extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: orders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return makeCard(orders[index]);
+                  return makeCard(context, orders[index]);
                 },
               ),
             );
           }
-          return Container(child: Text('Loading data'));
+          return Container(child: Center(
+            child: DotsIndicator(
+              dotsCount: 3,
+              position: 1.0,
+              decorator: DotsDecorator(
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              ),
+            ),
+          ));
         });
   }
 }

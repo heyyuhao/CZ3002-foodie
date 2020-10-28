@@ -5,6 +5,7 @@ import 'package:foodie_deliveryman/content/orderDonePage.dart';
 import 'package:foodie_deliveryman/content/orderToDeliverPage.dart';
 import 'package:foodie_deliveryman/content/orderToPickupPage.dart';
 import 'package:foodie_deliveryman/content/profilePage.dart';
+import 'package:foodie_deliveryman/keys/keys.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key key}) : super(key: key);
@@ -99,6 +100,7 @@ class _ContentPageState extends State<ContentPage> {
     }
 
     return Scaffold(
+      key: globalKey,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topBar(),
       body: orderPage(),

@@ -1,48 +1,83 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_deliveryman/model/order.dart';
+import 'package:foodie_deliveryman/keys/keys.dart';
 
 class OrderToDeliverPage extends StatelessWidget {
-  ListTile makeListTile(Order order) => ListTile(
-    contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-    title: Text(
-      order.orderName,
-      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-    ),
-    subtitle: Row(
-      children: <Widget>[
-        Expanded(
-          flex: 5,
-          child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Text(
-                  "Delivery Location: ${order.deliveryPoint}",
-                  style: TextStyle(color: Colors.white))),
-        )
-      ],
-    ),
-    trailing: IconButton(
-        icon: Icon(
-          Icons.check,
-          color: Colors.green,
-          size: 30.0,
+  ListTile makeListTile(BuildContext context, Order order) => ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        title: Text(
+          order.orderName,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        onPressed: () {
-          print('order change delivery state');
-        }),
-    onTap: () {
-      print('this order is tapped');
-    },
-  );
+        subtitle: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 5,
+              child: Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Text("Delivery Location: ${order.deliveryPoint}",
+                      style: TextStyle(color: Colors.white))),
+            )
+          ],
+        ),
+        trailing: IconButton(
+            icon: Icon(
+              Icons.check,
+              color: Colors.green,
+              size: 30.0,
+            ),
+            onPressed: () {
+              print('order change delivery state');
+              showDialog(context: context, builder: (BuildContext context) => AlertDialog(
+                  title: Text(order.orderName),
+                  content: Text("Delivered this order?\n(Tap outside to dismiss)"),
+                  actions: <Widget>[
+                    new FlatButton(
+                      child: new Text(
+                        "No",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    new FlatButton(
+                      child: new Text(
+                        "Yes",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      onPressed: () async {
+                        print("Picked up order");
+                        // await confirmOrder(order.orderID);
+                        await deliveredOrder(order.orderID);
+                        globalKey.currentState.showSnackBar(SnackBar(content: Text('Delivered order!')));
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ])
+              );
+            }),
+        onTap: () {
+          print('this order is tapped');
+        },
+      );
 
-  Card makeCard(Order order) => Card(
-    elevation: 8.0,
-    margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-    child: Container(
-      decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-      child: makeListTile(order),
-    ),
-  );
+  Card makeCard(BuildContext context, Order order) => Card(
+        elevation: 8.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        child: Container(
+          decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+          child: makeListTile(context, order),
+        ),
+      );
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
@@ -54,7 +89,7 @@ class OrderToDeliverPage extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             List<DocumentSnapshot> orderDocuments = snapshot.data.docs;
-            print('print orders done in main page');
+            // print('print orders done in main page');
             List<Order> orders = [];
             orderDocuments.forEach((element) {
               // printOrderDocument(element);
@@ -66,12 +101,23 @@ class OrderToDeliverPage extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: orders.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return makeCard(orders[index]);
+                  return makeCard(context, orders[index]);
                 },
               ),
             );
           }
-          return Container(child: Text('Loading data'));
+          return Container(child: Center(
+            child: DotsIndicator(
+              dotsCount: 3,
+              position: 1.0,
+              decorator: DotsDecorator(
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+              ),
+            ),
+          ));
         });
   }
 }
