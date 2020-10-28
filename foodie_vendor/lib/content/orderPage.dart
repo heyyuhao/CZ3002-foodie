@@ -2,115 +2,264 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie_vendor/model/order.dart';
 import 'package:foodie_vendor/keys/keys.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
 class OrderPage extends StatelessWidget {
-  ListTile makeVendorOrderList(BuildContext context, Order order) {
-    if (order.status == OrderStatus.Rejected.index) {
-      return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        title: Text(
-          order.orderName,
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+  ListTile confirmedOrderListTile(BuildContext context, Order order) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      title: Text(
+        order.orderName,
+        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: orderDetailsTable(order)),
         ),
-        subtitle: Row(children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text("Rejected Order")),
-          )
-        ]),
-        onTap: () {
-          globalKey.currentState.showSnackBar(SnackBar(content: Text('Order Already Rejected')));
-        },
-      );
-    } else if (order.status == OrderStatus.Confirmed.index) {
-      return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        title: Text(
-          order.orderName,
-          style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Row(children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text("Confirmed Order")),
-          )
-        ]),
-        onTap: () {
-          globalKey.currentState.showSnackBar(SnackBar(content: Text('Order Already Confirmed')));
-        },
-      );
-    }
-
-    return makeListToConfirmTile(context, order);
-
+      ]),
+    );
   }
-  ListTile makeListToConfirmTile(BuildContext context, Order order) => ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        title: Text(
-          order.orderName,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Row(children: <Widget>[
-          Expanded(
-            flex: 5,
-            child: Padding(
-                padding: EdgeInsets.only(top: 10.0),
-                child: Text(
-                    "Pickup Location: ${order.restaurantName} @ ${order.restaurantLocation}",
-                    style: TextStyle(color: Colors.white))),
-          )
-        ]),
-        onTap: () {
-          print('this order is tapped');
-          showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-              title: Text(order.orderName),
-              content: Text("Confirm or Reject Order?\n(Tap outside to dismiss)"),
-              actions: <Widget>[
-                new FlatButton(
-                  child: new Text(
-                    "Reject",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    ),
-                  ),
-                  onPressed: () {
-                    print("Rejected order");
-                    Navigator.of(context).pop();
-                  },
-                ),
-                new FlatButton(
-                  child: new Text(
-                    "Confirm",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  onPressed: () async {
-                    print("Confirmed order");
-                    await confirmOrder(order.orderID);
-                    globalKey.currentState.showSnackBar(SnackBar(content: Text('Yay! Success')));
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ])
-          );
-        },
-      );
 
-  Card makeCard(BuildContext context, Order order) => Card(
+  ListTile rejectedOrderListTile(BuildContext context, Order order) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      title: Text(
+        order.orderName,
+        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: orderDetailsTable(order)),
+        ),
+      ]),
+    );
+  }
+
+  ListTile unprocessedOrderListTile(BuildContext context, Order order) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      title: Text(
+        order.orderName,
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: orderDetailsTable(order)),
+        ),
+      ]),
+    );
+  }
+
+  Widget orderDetailsTable(Order order) {
+    List<DataRow> dataRows = [];
+
+    order.items.forEach((item) {
+      dataRows.add(DataRow(
+        cells: <DataCell>[
+          DataCell(Text(
+            item.dishName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )),
+          DataCell(Text(
+              item.quantity.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+          )),
+          DataCell(Text(
+            (item.quantity * item.unitPrice).toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )),
+        ],
+      ));
+    });
+
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Dish Name',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Quantity',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Price',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+      rows: dataRows,
+    );
+  }
+
+  Card makeCard(BuildContext context, Order order) {
+    if (order.status == OrderStatus.Rejected.index) {
+      return Card(
         elevation: 8.0,
         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
         child: Container(
           decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-          child: makeVendorOrderList(context, order),
+          child: rejectedOrderListTile(context, order),
         ),
       );
+    } else if (order.status == OrderStatus.Confirmed.index) {
+      return Card(
+        elevation: 8.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        child: Container(
+          decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+          child: confirmedOrderListTile(context, order),
+        ),
+      );
+    }
+    return Card(
+      elevation: 8.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+          decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              unprocessedOrderListTile(context, order),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  RaisedButton(
+                    child: const Text(
+                      "Reject",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                              title: Text("Reject " + order.orderName),
+                              content: Text(
+                                  "Are you sure to reject this order?\n(Tap outside to dismiss)"),
+                              actions: <Widget>[
+                                new FlatButton(
+                                  child: new Text(
+                                    "Reject",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    print("Rejected order");
+                                    await rejectOrder(order.orderID);
+                                    globalKey.currentState.showSnackBar(
+                                        SnackBar(
+                                            content: Text('Order Rejected')));
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                new FlatButton(
+                                  child: new Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ]));
+                    },
+                  ),
+                  const SizedBox(width: 16),
+                  RaisedButton(
+                    child: const Text(
+                      "Confirm",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                  title: Text("Confirm " + order.orderName),
+                                  content: Text(
+                                      "Confirm this order?\n(Tap outside to dismiss)"),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: new Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                    new FlatButton(
+                                      child: new Text(
+                                        "Confirm",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        await confirmOrder(order.orderID);
+                                        globalKey.currentState.showSnackBar(
+                                            SnackBar(
+                                                content:
+                                                    Text('Order Confirmed')));
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ]));
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ),
+            ],
+          )),
+    );
+  }
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
@@ -140,7 +289,19 @@ class OrderPage extends StatelessWidget {
             );
           }
 
-          return Container(child: Text('Loading data'));
+          return Container(
+              child: Center(
+            child: DotsIndicator(
+              dotsCount: 3,
+              position: 1.0,
+              decorator: DotsDecorator(
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+              ),
+            ),
+          ));
         });
   }
 }

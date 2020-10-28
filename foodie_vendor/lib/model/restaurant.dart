@@ -1,14 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Dish {
+  String _dishID;
   String _name;
   String _picture;
-  String _unitPrice;
+  double _unitPrice;
 
-  Dish(this._name, this._picture, this._unitPrice);
+  Dish(this._dishID, this._name, this._picture, this._unitPrice);
 
-  String get unitPrice => _unitPrice;
-  set unitPrice(String value) {
+  String get dishID => _dishID;
+
+  set dishID(String value) {
+    _dishID = value;
+  }
+
+  double get unitPrice => _unitPrice;
+  set unitPrice(double value) {
     _unitPrice = value;
   }
 
@@ -24,18 +31,18 @@ class Dish {
 }
 
 class Restaurant {
+  String _restaurantID;
   String _name;
   String _location;
   String _ownerID;
   List<Dish> _dishes;
-  String _telephone;
 
-  Restaurant(this._name, this._location, this._ownerID, this._dishes,
-      this._telephone);
+  Restaurant(this._restaurantID, this._name, this._location, this._dishes);
 
-  String get telephone => _telephone;
-  set telephone(String value) {
-    _telephone = value;
+  String get restaurantID => _restaurantID;
+
+  set restaurantID(String value) {
+    _restaurantID = value;
   }
 
   List<Dish> get dishes => _dishes;
@@ -57,4 +64,39 @@ class Restaurant {
   set name(String value) {
     _name = value;
   }
+}
+
+Future<QuerySnapshot> getRestaurantByVendor(
+    DocumentReference vendor,
+    {String collectionPath = 'restaurants'}) {
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .where('owner', isEqualTo: vendor)
+      .get();
+}
+
+Future<Restaurant> getRestaurantFromDocument(DocumentSnapshot restaurantDocument) async {
+  String restaurantID = restaurantDocument.reference.id;
+  String location = restaurantDocument.data()['location'];
+  String name = restaurantDocument.data()['name'];
+
+  List<DocumentSnapshot> dishDocuments = (await restaurantDocument.reference.collection('dishes').get()).docs;
+  List<Dish> dishes = [];
+
+  dishDocuments.forEach((dishDocument) {
+    dishes.add(getDishFromDocument(dishDocument));
+  });
+
+  Restaurant restaurant = new Restaurant(restaurantID, name, location, dishes);
+  return restaurant;
+}
+
+Dish getDishFromDocument(DocumentSnapshot dishDocument) {
+  String dishID = dishDocument.reference.id;
+  String name = dishDocument.data()['name'];
+  String picture = dishDocument.data()['picture'];
+  double price = dishDocument.data()['price'];
+
+  Dish dish = new Dish(dishID,name,  picture, price);
+  return dish;
 }

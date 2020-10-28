@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodie_vendor/auth/googleAuth.dart';
 import 'package:foodie_vendor/content/contentPage.dart';
 
+
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -34,6 +35,8 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         signInWithGoogle().then((result) {
           if (result != null) {
+            print('log in successful result, user');
+            print(result);
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
