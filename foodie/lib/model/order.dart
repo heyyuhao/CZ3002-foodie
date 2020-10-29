@@ -196,6 +196,7 @@ Future<void> addOrder(Order order, {String collectionPath = "orders"}) {
 Future<QuerySnapshot> getOrdersForUser(
     String userID,
     {String collectionPath = "orders"}) {
+  print('fetching orders for user: ' + userID);
   return FirebaseFirestore.instance
       .collection(collectionPath)
       .where('userID', isEqualTo: userID)

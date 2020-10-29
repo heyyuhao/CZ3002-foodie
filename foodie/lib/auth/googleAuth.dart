@@ -56,6 +56,8 @@ Future<String> signInWithGoogle() async {
     DocumentSnapshot clientDocument = clientDocuments[0];
     appUser.userID = clientDocument.reference.id;
 
+    print('user id: ' + appUser.userID);
+
     return '$user';
   }
 
