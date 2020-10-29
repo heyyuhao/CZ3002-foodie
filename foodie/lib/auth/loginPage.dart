@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'sign_in.dart';
-// import 'first_screen.dart';
-import 'package:foodie/getfood/MainPage.dart';
+import 'package:foodie/auth/googleAuth.dart';
+import 'package:foodie/content/contentPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -38,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return MainPage();
+                  return ContentPage();
                 },
               ),
             );
@@ -58,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                'Start with Google',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,

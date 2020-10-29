@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
 
-import 'package:foodie/sign_in_flutter/login_page.dart';
-import 'package:foodie/sign_in_flutter/sign_in.dart';
-import 'package:foodie/sign_in_flutter/first_screen.dart';
+import 'package:foodie/auth/loginPage.dart';
+import 'package:foodie/auth/googleAuth.dart';
+import 'package:foodie/auth/first_screen.dart';
 
 import 'package:foodie/getfood/payment1.dart';
 
@@ -49,13 +49,13 @@ final List child = map<Widget>(imgList, (index, i) {
                   child: Container(
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(200, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          )),
+                        colors: [
+                          Color.fromARGB(200, 0, 0, 0),
+                          Color.fromARGB(0, 0, 0, 0)
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      )),
                       padding: EdgeInsets.symmetric(
                           vertical: 40.0, horizontal: 40.0),
                       child: Text(
@@ -93,13 +93,12 @@ final List<Dish> _dishes = <Dish>[
       name: 'Local Delights',
       price: '4 SGD',
       calories: '120kcal',
-      imageUrl: 'one.jpg'
-  ),
+      imageUrl: 'one.jpg'),
   Dish(
       name: 'Xian Cuisine',
       price: '5 SGD',
       calories: '350k',
-      imageUrl:'201205-xl-beef-fried-rice.jpg'),
+      imageUrl: '201205-xl-beef-fried-rice.jpg'),
   Dish(
     name: 'Chicken Rice',
     price: '5 SGD',
@@ -110,13 +109,13 @@ final List<Dish> _dishes = <Dish>[
     name: 'Thai Food',
     price: '5 SGD',
     calories: '330k',
-    imageUrl:'crispy-fish-Greek-rice-bowls-1.jpg',
+    imageUrl: 'crispy-fish-Greek-rice-bowls-1.jpg',
   ),
   Dish(
     name: 'Indian Food',
     price: '5 SGD',
     calories: '330k',
-    imageUrl:'crispy-fish-Greek-rice-bowls-1.jpg',
+    imageUrl: 'crispy-fish-Greek-rice-bowls-1.jpg',
   ),
 ];
 
@@ -199,49 +198,49 @@ class MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        // automaticallyImplyLeading: false,
-        // // title: const Text('Canteens'),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(
-        //       Icons.shopping_cart,
-        //       color: Colors.white,
-        //     ),
-        //     onPressed: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => OrderListPage()),
-        //       );
-        //     },
-        //   )
-        // ],
-      ),
+          // automaticallyImplyLeading: false,
+          // // title: const Text('Canteens'),
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: Icon(
+          //       Icons.shopping_cart,
+          //       color: Colors.white,
+          //     ),
+          //     onPressed: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(builder: (context) => OrderListPage()),
+          //       );
+          //     },
+          //   )
+          // ],
+          ),
       body: Column(
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               InkWell(
-                  // onTap: () => print("redirect to user info"),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ((FirstScreen()));
-                        },
-                      ),
-                    );
-                  },
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      imageUrl,
-                    ),
-                    radius: 20,
-                    backgroundColor: Colors.transparent,
+                // onTap: () => print("redirect to user info"),
+                onTap: () {
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) {
+                  //       return ((FirstScreen()));
+                  //     },
+                  //   ),
+                  // );
+                },
+                child: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    appUser.imageUrl,
                   ),
+                  radius: 20,
+                  backgroundColor: Colors.transparent,
+                ),
               ),
               Container(
-                child: Text('Hi ${name}', textAlign: TextAlign.center),
+                child: Text('Hi ${appUser.userName}', textAlign: TextAlign.center),
               ),
               InkWell(
                 onTap: () => print("redirect to user order history"),
@@ -256,25 +255,25 @@ class MainPageState extends State<MainPage> {
           new Padding(
               padding: EdgeInsets.symmetric(vertical: 15.0),
               child: CarouselSlider(
-                  height:100,
+                  height: 100,
                   autoPlay: false,
                   viewportFraction: 0.8,
                   aspectRatio: 2.0,
-                  items: child
-              )),
+                  items: child)),
           CustomScrollView(
             shrinkWrap: true,
             // padding: const EdgeInsets.all(20.0),
-            slivers: <Widget> [
+            slivers: <Widget>[
               SliverList(
                 delegate: SliverChildBuilderDelegate((context, index) {
                   return new GestureDetector(
                     onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SelectDishPage()),
-                        );
-                      },
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SelectDishPage()),
+                      );
+                    },
                     child: Card(
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -290,7 +289,8 @@ class MainPageState extends State<MainPage> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => SelectDishPage()),
+                                    MaterialPageRoute(
+                                        builder: (context) => SelectDishPage()),
                                   );
                                 },
                                 child: Hero(
@@ -311,21 +311,21 @@ class MainPageState extends State<MainPage> {
                               )),
                           Expanded(
                               child: Padding(
-                                padding: EdgeInsets.all(5.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Text(
-                                      "${_dishes[index].name}",
-                                      style: TextStyle(fontSize: 16.0),
-                                    ),
-                                    Text(
-                                      "Average: ${_dishes[index].price}    Calories: 400k",
-                                      style: TextStyle(fontSize: 13.0),
-                                    ),
-                                  ],
+                            padding: EdgeInsets.all(5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Text(
+                                  "${_dishes[index].name}",
+                                  style: TextStyle(fontSize: 16.0),
                                 ),
-                              )),
+                                Text(
+                                  "Average: ${_dishes[index].price}    Calories: 400k",
+                                  style: TextStyle(fontSize: 13.0),
+                                ),
+                              ],
+                            ),
+                          )),
                         ],
                       ),
                     ),
@@ -336,7 +336,6 @@ class MainPageState extends State<MainPage> {
           )
         ],
       ),
-
     );
   }
 }

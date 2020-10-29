@@ -1,12 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:foodie/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-// Add these three variables to store the info
-// retrieved from the FirebaseUser
-String name;
-String email;
-String imageUrl;
+User appUser;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -23,13 +21,13 @@ Future<String> signInWithGoogle() async {
   );
 
   final UserCredential authResult = await _auth.signInWithCredential(credential);
-  final User user = authResult.user;
+  final user = authResult.user;
 
   if (user != null) {
     assert(!user.isAnonymous);
     assert(await user.getIdToken() != null);
 
-    final User currentUser = _auth.currentUser;
+    final currentUser = _auth.currentUser;
     assert(user.uid == currentUser.uid);
 
     print('signInWithGoogle succeeded: $user');
@@ -40,14 +38,25 @@ Future<String> signInWithGoogle() async {
     assert(user.displayName != null);
     assert(user.photoURL != null);
 
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoURL;
+    String name = user.displayName;
+    String email = user.email;
+    String imageUrl = user.photoURL;
 
-    // Only taking the first part of the name, i.e., First Name
-    if (name.contains(" ")) {
-      name = name.substring(0, name.indexOf(" "));
+    appUser = new User(email, name, UserType.Client.index);
+    appUser.imageUrl = imageUrl;
+
+    List<DocumentSnapshot> clientDocuments = (await getClientByEmail(email)).docs;
+    if (clientDocuments.length == 0) {
+      // no such client, add this client into database
+      print('User has not registered');
+      User newUser = new User(email, name, UserType.Client.index);
+      await addClient(newUser);
+      clientDocuments = (await getClientByEmail(email)).docs;
     }
+    DocumentSnapshot clientDocument = clientDocuments[0];
+    appUser.userID = clientDocument.reference.id;
+
+    print('user id: ' + appUser.userID);
 
     return '$user';
   }
