@@ -32,8 +32,8 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                 SizedBox(height: 40),
                 RaisedButton(
                   onPressed: () {
-                    User user = new User("email1", -1);
-                    add_user_to_firestore(user);
+                    // User user = new User("email1", -1);
+                    // add_user_to_firestore(user);
                   },
                   color: Colors.deepPurple,
                   child: Padding(
@@ -50,7 +50,7 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                 SizedBox(height: 40),
                 RaisedButton(
                   onPressed: () {
-                    update_user_by_fields_in_firestore("pfOc90lJSibTbsgQn04v", {"address": {"city": "singapore1", "street": "street1"}}, collectionPath:"testings");
+                    // update_user_by_fields_in_firestore("pfOc90lJSibTbsgQn04v", {"address": {"city": "singapore1", "street": "street1"}}, collectionPath:"testings");
                   },
                   color: Colors.deepPurple,
                   child: Padding(
@@ -88,15 +88,15 @@ class _InteractDBWidgetState extends State<InteractDBWidget> {
                 //       borderRadius: BorderRadius.circular(40)),
                 // ),
                 // SizedBox(height: 40),
-                RaisedButton(
-                  onPressed: () {
-                    get_user_documentsnapshot_by_documentID("0d6ubxYogJfX81TH5flO").then((documentSnapshot){
-                      User user = User.fromDocument(documentSnapshot);
-                      print(user.toMap());
-                    });
-                  },
-                  child: Text('Get data'),
-                )
+                // RaisedButton(
+                //   onPressed: () {
+                //     // get_user_documentsnapshot_by_documentID("0d6ubxYogJfX81TH5flO").then((documentSnapshot){
+                //     //   User user = User.fromDocument(documentSnapshot);
+                //       print('asdf');
+                //     });
+                //   },
+                //   child: Text('Get data'),
+                // )
               ],
             ),
           ),

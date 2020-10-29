@@ -233,14 +233,14 @@ class MainPageState extends State<MainPage> {
                 },
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                    imageUrl,
+                    appUser.imageUrl,
                   ),
                   radius: 20,
                   backgroundColor: Colors.transparent,
                 ),
               ),
               Container(
-                child: Text('Hi ${name}', textAlign: TextAlign.center),
+                child: Text('Hi ${appUser.userName}', textAlign: TextAlign.center),
               ),
               InkWell(
                 onTap: () => print("redirect to user order history"),

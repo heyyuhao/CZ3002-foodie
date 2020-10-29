@@ -25,7 +25,7 @@ class FirstScreen extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 backgroundImage: NetworkImage(
-                  imageUrl,
+                  appUser.imageUrl,
                 ),
                 radius: 60,
                 backgroundColor: Colors.transparent,
@@ -39,7 +39,7 @@ class FirstScreen extends StatelessWidget {
                     color: Colors.black54),
               ),
               Text(
-                name,
+                appUser.userName,
                 style: TextStyle(
                     fontSize: 25,
                     color: Colors.deepPurple,
@@ -54,7 +54,7 @@ class FirstScreen extends StatelessWidget {
                     color: Colors.black54),
               ),
               Text(
-                email,
+                appUser.userEmail,
                 style: TextStyle(
                     fontSize: 25,
                     color: Colors.deepPurple,

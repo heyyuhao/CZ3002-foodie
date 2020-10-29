@@ -1,15 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foodie/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-// Add these three variables to store the info
-// retrieved from the FirebaseUser
-String name;
-String email;
-String imageUrl;
-String userID;
+User appUser;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -43,19 +38,23 @@ Future<String> signInWithGoogle() async {
     assert(user.displayName != null);
     assert(user.photoURL != null);
 
-    name = user.displayName;
-    email = user.email;
-    imageUrl = user.photoURL;
+    String name = user.displayName;
+    String email = user.email;
+    String imageUrl = user.photoURL;
+
+    appUser = new User(email, name, UserType.Client.index);
+    appUser.imageUrl = imageUrl;
 
     List<DocumentSnapshot> clientDocuments = (await getClientByEmail(email)).docs;
     if (clientDocuments.length == 0) {
-      // no such client
-      print('no such vendor');
-      // TODO: Add this client into database
-      return null;
+      // no such client, add this client into database
+      print('User has not registered');
+      User newUser = new User(email, name, UserType.Client.index);
+      await addClient(newUser);
+      clientDocuments = (await getClientByEmail(email)).docs;
     }
     DocumentSnapshot clientDocument = clientDocuments[0];
-    userID = clientDocument.reference.id;
+    appUser.userID = clientDocument.reference.id;
 
     return '$user';
   }

@@ -109,7 +109,7 @@ class ProfilePage extends StatelessWidget {
                 SizedBox(width: 30),
                 CircleAvatar(
                   backgroundImage: NetworkImage(
-                    imageUrl,
+                    appUser.imageUrl,
                   ),
                   radius: 30,
                   backgroundColor: Colors.transparent,
@@ -132,7 +132,7 @@ class ProfilePage extends StatelessWidget {
                             ),
                             SizedBox(width: 15),
                             Text(
-                              name,
+                              appUser.userName,
                               style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
@@ -143,7 +143,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        email,
+                        appUser.userEmail,
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/auth/googleAuth.dart';
-import 'package:foodie/getfood/MainPage.dart';
 import 'package:foodie/content/contentPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -58,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                'Start with Google',
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.grey,
