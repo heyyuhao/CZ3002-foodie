@@ -18,7 +18,7 @@ class _ContentPageState extends State<ContentPage> {
         labelStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
     new TabItem(Icons.accessibility, "Me", Colors.orange,
         labelStyle:
-        TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+            TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
   ]);
 
   int selectedPos = 0;
@@ -45,12 +45,27 @@ class _ContentPageState extends State<ContentPage> {
       }
 
       return AppBar(
-          elevation: 1,
-          backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
-          title: Text(
-            title,
-            style: TextStyle(color: Colors.blue),
-          ));
+        automaticallyImplyLeading: false,
+        elevation: 1,
+        backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
+        title: Text(
+          title,
+          style: TextStyle(color: Colors.blue),
+        ),
+        actions: (selectedPos == 0)
+            ? <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    print('clicked cart');
+                  },
+                )
+              ]
+            : null,
+      );
     }
 
     Widget bottomNav() {
@@ -72,7 +87,7 @@ class _ContentPageState extends State<ContentPage> {
       key: globalKey,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topBar(),
-      body: (selectedPos == 0) ? RestaurantsPage(): ProfilePage(),
+      body: (selectedPos == 0) ? RestaurantsPage() : ProfilePage(),
       bottomNavigationBar: bottomNav(),
     );
   }
