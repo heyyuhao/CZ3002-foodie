@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:foodie/content/carouselPromotion.dart';
-import 'package:foodie/content/restaurantsWidget.dart';
+import 'package:foodie/content/restaurantsList.dart';
 
 class RestaurantsPage extends StatefulWidget {
   RestaurantsPage({Key key, this.title}) : super(key: key);
@@ -21,7 +21,7 @@ class RestaurantsPageState extends State<RestaurantsPage> {
         Padding(
             padding: EdgeInsets.symmetric(vertical: 15.0),
             child: CarouselPromotion()),
-        RestaurantsWidget(),
+        RestaurantsList(),
       ],
     );
   }

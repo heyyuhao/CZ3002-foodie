@@ -4,6 +4,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie/auth/googleAuth.dart';
 import 'package:foodie/model/order.dart';
 
+
 class OrderHistoryWidget extends StatelessWidget {
   ListTile orderHistoryList(BuildContext context, Order order) => ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -73,7 +74,7 @@ class OrderHistoryWidget extends StatelessWidget {
               orders.add(getOrderFromDocument(element));
             });
             return Container(
-              height: 335,
+              height: 500,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,

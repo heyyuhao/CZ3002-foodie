@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/auth/googleAuth.dart';
 import 'package:foodie/auth/loginPage.dart';
-import 'package:foodie/content/orderHistoryWidget.dart';
+import 'package:foodie/content/orderHistoryPage.dart';
+
 
 class ProfilePage extends StatelessWidget {
   final String fallBackImage =
@@ -95,20 +96,29 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40)),
             ),
           ),
-          Row(
-            children: <Widget>[
-              SizedBox(width: 20),
-              Text(
-                'Order History',
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+          ButtonTheme(
+            minWidth: 20.0,
+            height: 30.0,
+            child: RaisedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OrderHistoryPage()));
+              },
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: Text(
+                  'View My Order History',
+                  style: TextStyle(fontSize: 14, color: Colors.white),
+                ),
               ),
-            ],
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+            ),
           ),
-          SizedBox(height: 10),
-          OrderHistoryWidget(),
         ],
       ),
     );

@@ -35,9 +35,10 @@ class Restaurant {
   String _name;
   String _location;
   String _ownerID;
+  String _picture;
   List<Dish> _dishes;
 
-  Restaurant(this._restaurantID, this._name, this._location, this._dishes);
+  Restaurant(this._restaurantID, this._name, this._picture, this._location, this._dishes);
 
   String get restaurantID => _restaurantID;
 
@@ -53,6 +54,13 @@ class Restaurant {
   String get ownerID => _ownerID;
   set ownerID(String value) {
     _ownerID = value;
+  }
+
+
+  String get picture => _picture;
+
+  set picture(String value) {
+    _picture = value;
   }
 
   String get location => _location;
@@ -76,7 +84,7 @@ Dish getDishFromDocument(DocumentSnapshot dishDocument) {
   String dishID = dishDocument.reference.id;
   String name = dishDocument.data()['name'];
   String picture = dishDocument.data()['picture'];
-  double price = dishDocument.data()['price'];
+  double price = dishDocument.data()['price'].toDouble();
 
   Dish dish = new Dish(dishID,name,  picture, price);
   return dish;
@@ -86,8 +94,9 @@ Restaurant getRestaurantFromDocumentWithoutDish(DocumentSnapshot restaurantDocum
   String restaurantID = restaurantDocument.reference.id;
   String location = restaurantDocument.data()['location'];
   String name = restaurantDocument.data()['name'];
+  String picture = restaurantDocument.data()['picture'];
   List<Dish> dishes = [];
-  Restaurant restaurant = new Restaurant(restaurantID, name, location, dishes);
+  Restaurant restaurant = new Restaurant(restaurantID, name, picture, location, dishes);
   return restaurant;
 }
 
@@ -95,6 +104,7 @@ Future<Restaurant> getRestaurantFromDocument(DocumentSnapshot restaurantDocument
   String restaurantID = restaurantDocument.reference.id;
   String location = restaurantDocument.data()['location'];
   String name = restaurantDocument.data()['name'];
+  String picture = restaurantDocument.data()['picture'];
 
   List<DocumentSnapshot> dishDocuments = (await restaurantDocument.reference.collection('dishes').get()).docs;
   List<Dish> dishes = [];
@@ -103,6 +113,14 @@ Future<Restaurant> getRestaurantFromDocument(DocumentSnapshot restaurantDocument
     dishes.add(getDishFromDocument(dishDocument));
   });
 
-  Restaurant restaurant = new Restaurant(restaurantID, name, location, dishes);
+  Restaurant restaurant = new Restaurant(restaurantID, name, picture, location, dishes);
   return restaurant;
+}
+
+Future<QuerySnapshot> getDishOfRestaurant (String restaurantID, {String collectionPath = 'restaurants'}) async {
+  DocumentSnapshot restaurantDocument = await FirebaseFirestore.instance
+      .collection(collectionPath)
+      .doc(restaurantID).get();
+
+  return restaurantDocument.reference.collection('dishes').get();
 }
