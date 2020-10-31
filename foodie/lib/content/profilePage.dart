@@ -3,9 +3,126 @@ import 'package:foodie/auth/googleAuth.dart';
 import 'package:foodie/auth/loginPage.dart';
 import 'package:foodie/content/orderHistoryPage.dart';
 import 'package:foodie/global.dart' as global;
+import 'package:foodie/model/order.dart';
 
 
 class ProfilePage extends StatelessWidget {
+  ListTile currentOrderListTile(Order order) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      title: Text(
+        order.orderName,
+        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+      subtitle: Row(children: <Widget>[
+        Expanded(
+          flex: 5,
+          child: Padding(
+              padding: EdgeInsets.only(top: 5.0),
+              child: orderDetailsTable(order)),
+        ),
+      ]),
+    );
+  }
+
+  Widget orderDetailsTable(Order order) {
+    List<DataRow> dataRows = [];
+
+    order.items.forEach((item) {
+      dataRows.add(DataRow(
+        cells: <DataCell>[
+          DataCell(Text(
+            item.dishName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )),
+          DataCell(Text(
+            item.quantity.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )),
+          DataCell(Text(
+            (item.quantity * item.unitPrice).toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          )),
+        ],
+      ));
+    });
+
+    return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Dish Name',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Quantity',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Price',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+      rows: dataRows,
+    );
+  }
+
+  Widget currentOrdersListView(List<Order> orders) {
+    if (orders.length == 0) {
+      return Center(
+        child: Text('No order in progress',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.white,
+            )),
+      );
+    }
+
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      itemCount: global.currOrders.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Card(
+          elevation: 8.0,
+          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          child: Container(
+              decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  currentOrderListTile(orders[index]),
+                ],
+              )),
+        );
+      },
+    );
+  }
+
   final String fallBackImage =
       "https://www.clipartmax.com/png/middle/138-1381067_fried-fish-fish-fry-roasting-fish-on-dish-cartoon.png";
   @override
@@ -96,6 +213,10 @@ class ProfilePage extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40)),
             ),
+          ),
+          Container(
+            height: 300,
+            child: currentOrdersListView(global.currOrders),
           ),
           ButtonTheme(
             minWidth: 20.0,

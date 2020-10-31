@@ -5,7 +5,7 @@ import 'package:foodie/model/cart.dart';
 import 'package:foodie/model/restaurant.dart';
 
 User appUser;
-Order currOrder;
+List<Order> currOrders = [];
 Restaurant currentRestaurant;
 HashMap<Dish, int> cartItemsMap = new HashMap();
 
@@ -31,7 +31,7 @@ List<CartItem> getCartItems() {
   return cartItems;
 }
 
-void setCurrentOrder() {
+void setCurrentOrders() {
   return ;
 }
 
