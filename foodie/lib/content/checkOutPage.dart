@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/global.dart' as global;
+import 'package:foodie/model/order.dart';
+import 'package:foodie/content/deliveryPointChoice.dart';
+import 'package:foodie/content/deliveryTimeChoice.dart';
+
 
 class CheckOutPage extends StatefulWidget {
   CheckOutPage({Key key}) : super(key: key);
@@ -9,42 +13,35 @@ class CheckOutPage extends StatefulWidget {
 }
 
 class _CheckOutPageState extends State<CheckOutPage> {
-  String selectedDeliveryTime;
-  List<String> deliveryTimeChoices = <String>[
-    'Today Lunch',
-    'Today Dinner',
-    'Tomorrow Lunch',
-    'Tomorrow Dinner'
-  ];
+  DeliveryTimeChoice selectedDeliveryTime;
+  List<DeliveryTimeChoice> deliveryTimeChoices = getDeliveryTimeChoices();
 
   Widget dropDownDeliveryTime() {
-    return DropdownButton<String>(
+    return DropdownButton<DeliveryTimeChoice>(
       hint: Text("Select Delivery Time",
           style: TextStyle(
+            fontSize: 14,
             fontFamily: 'Raleway',
             fontWeight: FontWeight.bold,
             color: Colors.blue,
           )),
       value: selectedDeliveryTime,
-      onChanged: (String value) {
+      onChanged: (DeliveryTimeChoice value) {
         setState(() {
           selectedDeliveryTime = value;
         });
       },
-      items: deliveryTimeChoices.map((String deliveryTimeChoice) {
-        return DropdownMenuItem<String>(
+      items: deliveryTimeChoices.map((DeliveryTimeChoice deliveryTimeChoice) {
+        return DropdownMenuItem<DeliveryTimeChoice>(
           value: deliveryTimeChoice,
-          child: Row(
-            children: <Widget>[
-              Text(
-                deliveryTimeChoice,
-                style: TextStyle(
-                  fontFamily: 'Raleway',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-            ],
+          child: Text(
+            deliveryTimeChoice.deliveryTimeStartStr,
+            style: TextStyle(
+              fontSize: 14,
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
           ),
         );
       }).toList(),
@@ -52,18 +49,13 @@ class _CheckOutPageState extends State<CheckOutPage> {
   }
 
   String selectedDeliveryPoint;
-  List<String> deliveryPointChoices = <String>[
-    'Crescent Hall',
-    'Hall 3',
-    'Hall 4',
-    'Hall 8',
-    'North Hill'
-  ];
+  List<String> deliveryPointChoices = getDeliveryPointChoices();
 
   Widget dropDownDeliveryPoint() {
     return DropdownButton<String>(
       hint: Text("Select Delivery Point",
           style: TextStyle(
+            fontSize: 14,
             fontFamily: 'Raleway',
             fontWeight: FontWeight.bold,
             color: Colors.blue,
@@ -82,6 +74,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
               Text(
                 deliveryPointChoice,
                 style: TextStyle(
+                  fontSize: 14,
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.bold,
                   color: Colors.blue,
@@ -92,6 +85,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
         );
       }).toList(),
     );
+  }
+
+  bool _ableToPlaceOrder() {
+    return (selectedDeliveryTime != null && selectedDeliveryPoint != null);
   }
 
   Widget orderSummary() {
@@ -157,6 +154,31 @@ class _CheckOutPageState extends State<CheckOutPage> {
       ],
       rows: dataRows,
     );
+  }
+
+  Order constructOrder() {
+    List<OrderItem> orderItems = [];
+    global.getCartItems().forEach((item) {
+      orderItems.add(new OrderItem(item.dish.name, item.dish.unitPrice, item.quantity));
+    });
+
+    Order orderToAdd = new Order(
+      selectedDeliveryPoint,
+      selectedDeliveryTime.deliveryTimeStart,
+      selectedDeliveryTime.deliveryTimeEnd,
+      DateTime.now(),
+      global.currentRestaurant.name,
+      global.currentRestaurant.location,
+      orderItems,
+      OrderStatus.Created.index,
+      global.appUser.userID
+    );
+
+    // add order to firebase
+    addOrder(orderToAdd);
+
+    // add this order to current order as well
+    global.addToCurrentOrders(orderToAdd);
   }
 
   @override
@@ -234,7 +256,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
               "Delivery Time: ",
               textAlign: TextAlign.left,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -248,7 +270,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
               "Delivery Point: ",
               textAlign: TextAlign.left,
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -260,10 +282,10 @@ class _CheckOutPageState extends State<CheckOutPage> {
             minWidth: 80.0,
             height: 35.0,
             child: RaisedButton(
-              onPressed: () {
-                print('Payment received');
-              },
-              color: Colors.blue,
+              onPressed: _ableToPlaceOrder() ? () {
+                print('Order Placed');
+              } : null,
+              color: _ableToPlaceOrder() ? Colors.blue : Colors.grey,
               child: Padding(
                 padding: const EdgeInsets.all(0),
                 child: Text(
