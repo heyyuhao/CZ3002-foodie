@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 enum OrderStatus {
   Rejected,
   Created,
@@ -118,6 +119,25 @@ class Order {
     };
   }
 
+  String getStatusString() {
+    if (status == OrderStatus.Rejected.index) {
+      return "Rejected";
+    }
+    if (status == OrderStatus.Created.index) {
+      return "Created";
+    }
+    if (status == OrderStatus.Confirmed.index) {
+      return "Confirmed";
+    }
+    if (status == OrderStatus.Delivering.index) {
+      return "Delivering";
+    }
+    if (status == OrderStatus.Delivered.index) {
+      return "Delivered";
+    }
+    return "Unknown";
+  }
+
 
   String get orderID => _orderID;
   set orderID(String value) {
@@ -193,6 +213,7 @@ Future<void> addOrder(Order order, {String collectionPath = "orders"}) {
   }).catchError((error) => print("Failed to add order: $error"));
 }
 
+
 Future<QuerySnapshot> getOrdersForUser(
     String userID,
     {String collectionPath = "orders"}) {
@@ -202,6 +223,19 @@ Future<QuerySnapshot> getOrdersForUser(
       .where('userID', isEqualTo: userID)
       .get();
 }
+
+
+Future<QuerySnapshot> getCurrentOrdersForUser(
+    String userID,
+    {String collectionPath = "orders"}) {
+  print('fetching orders for user: ' + userID);
+  // DateTime timeThreshold = new DateTime.now().add(Duration(hours: 1));
+  return FirebaseFirestore.instance
+      .collection(collectionPath)
+      .where('userID', isEqualTo: userID)
+      .get();
+}
+
 
 void printOrderDocument(DocumentSnapshot orderDocument) {
   print('orderID: ' + orderDocument.reference.id);
@@ -216,6 +250,7 @@ void printOrderDocument(DocumentSnapshot orderDocument) {
   print('totalPrice: '+ orderDocument.data()['totalPrice'].toString());
   print('userID: '+ orderDocument.data()['userID']);
 }
+
 
 Order getOrderFromDocument(DocumentSnapshot orderDocument) {
   String orderID = orderDocument.reference.id;

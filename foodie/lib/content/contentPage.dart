@@ -5,6 +5,7 @@ import 'package:foodie/content/profilePage.dart';
 import 'package:foodie/content/restaurantsPage.dart';
 import 'package:foodie/keys/keys.dart';
 
+
 class ContentPage extends StatefulWidget {
   ContentPage({Key key}) : super(key: key);
 
@@ -52,19 +53,19 @@ class _ContentPageState extends State<ContentPage> {
           title,
           style: TextStyle(color: Colors.blue),
         ),
-        actions: (selectedPos == 0)
-            ? <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.shopping_cart,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    print('clicked cart');
-                  },
-                )
-              ]
-            : null,
+        // actions: (selectedPos == 0)
+        //     ? <Widget>[
+        //         IconButton(
+        //           icon: Icon(
+        //             Icons.shopping_cart,
+        //             color: Colors.white,
+        //           ),
+        //           onPressed: () {
+        //             print('clicked cart');
+        //           },
+        //         )
+        //       ]
+        //     : null,
       );
     }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:foodie/auth/googleAuth.dart';
+import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/order.dart';
+
 
 class OrderHistoryWidget extends StatelessWidget {
   ListTile orderHistoryList(BuildContext context, Order order) => ListTile(
@@ -58,7 +59,7 @@ class OrderHistoryWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: getOrdersForUser(appUser.userID),
+        future: getOrdersForUser(global.appUser.userID),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));
@@ -73,7 +74,7 @@ class OrderHistoryWidget extends StatelessWidget {
               orders.add(getOrderFromDocument(element));
             });
             return Container(
-              height: 335,
+              height: 500,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
