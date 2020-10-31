@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:foodie/model/user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:foodie/global.dart' as global;
 
-User appUser;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -42,8 +42,8 @@ Future<String> signInWithGoogle() async {
     String email = user.email;
     String imageUrl = user.photoURL;
 
-    appUser = new User(email, name, UserType.Client.index);
-    appUser.imageUrl = imageUrl;
+    global.appUser = new User(email, name, UserType.Client.index);
+    global.appUser.imageUrl = imageUrl;
 
     List<DocumentSnapshot> clientDocuments = (await getClientByEmail(email)).docs;
     if (clientDocuments.length == 0) {
@@ -54,9 +54,9 @@ Future<String> signInWithGoogle() async {
       clientDocuments = (await getClientByEmail(email)).docs;
     }
     DocumentSnapshot clientDocument = clientDocuments[0];
-    appUser.userID = clientDocument.reference.id;
+    global.appUser.userID = clientDocument.reference.id;
 
-    print('user id: ' + appUser.userID);
+    print('user id: ' + global.appUser.userID);
 
     return '$user';
   }
