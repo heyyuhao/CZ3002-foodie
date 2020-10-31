@@ -3,7 +3,7 @@ import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/order.dart';
 import 'package:foodie/content/deliveryPointChoice.dart';
 import 'package:foodie/content/deliveryTimeChoice.dart';
-
+import 'package:foodie/content/contentPage.dart';
 
 class CheckOutPage extends StatefulWidget {
   CheckOutPage({Key key}) : super(key: key);
@@ -159,20 +159,24 @@ class _CheckOutPageState extends State<CheckOutPage> {
   Order constructOrder() {
     List<OrderItem> orderItems = [];
     global.getCartItems().forEach((item) {
-      orderItems.add(new OrderItem(item.dish.name, item.dish.unitPrice, item.quantity));
+      orderItems.add(
+          new OrderItem(item.dish.name, item.dish.unitPrice, item.quantity));
     });
 
     Order orderToAdd = new Order(
-      selectedDeliveryPoint,
-      selectedDeliveryTime.deliveryTimeStart,
-      selectedDeliveryTime.deliveryTimeEnd,
-      DateTime.now(),
-      global.currentRestaurant.name,
-      global.currentRestaurant.location,
-      orderItems,
-      OrderStatus.Created.index,
-      global.appUser.userID
-    );
+        selectedDeliveryPoint,
+        selectedDeliveryTime.deliveryTimeStart,
+        selectedDeliveryTime.deliveryTimeEnd,
+        DateTime.now(),
+        global.currentRestaurant.name,
+        global.currentRestaurant.location,
+        orderItems,
+        OrderStatus.Created.index,
+        global.appUser.userID);
+
+    print('add order');
+
+    print(orderToAdd.toString());
 
     // add order to firebase
     addOrder(orderToAdd);
@@ -230,7 +234,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
           ),
           SizedBox(height: 30),
           Container(
-            height: 240,
+            height: 290,
             child: Column(
               children: [
                 orderSummary(),
@@ -277,14 +281,17 @@ class _CheckOutPageState extends State<CheckOutPage> {
             SizedBox(width: 20),
             dropDownDeliveryPoint()
           ]),
-          SizedBox(height: 55),
+          SizedBox(height: 15),
           ButtonTheme(
             minWidth: 80.0,
             height: 35.0,
             child: RaisedButton(
-              onPressed: _ableToPlaceOrder() ? () {
-                print('Order Placed');
-              } : null,
+              onPressed: _ableToPlaceOrder()
+                  ? () {
+                      print('Order Placed');
+                      constructOrder();
+                    }
+                  : null,
               color: _ableToPlaceOrder() ? Colors.blue : Colors.grey,
               child: Padding(
                 padding: const EdgeInsets.all(0),

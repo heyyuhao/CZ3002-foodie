@@ -38,8 +38,8 @@ void setCurrentRestaurant(Restaurant restaurant) {
 }
 
 
-void setCurrentOrders() {
-  return ;
+void addToCurrentOrders(Order order) {
+  currOrders.add(order);
 }
 
 

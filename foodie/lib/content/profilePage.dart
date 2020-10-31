@@ -4,16 +4,35 @@ import 'package:foodie/auth/loginPage.dart';
 import 'package:foodie/content/orderHistoryPage.dart';
 import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/order.dart';
+import 'package:foodie/content/colorUtil.dart';
+import 'package:foodie/content/currentOrderWidget.dart';
 
 
 class ProfilePage extends StatelessWidget {
   ListTile currentOrderListTile(Order order) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      title: Text(
-        order.orderName,
-        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-      ),
+      title: Column(
+        children: [
+          Text(
+            order.orderName,
+            style: TextStyle(
+                color: getOrderStatusColor(order.status),
+                fontWeight: FontWeight.bold,
+              fontSize: 12
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "Status: ${order.getStatusString()}",
+            style: TextStyle(
+                color: getOrderStatusColor(order.status),
+                fontWeight: FontWeight.bold,
+                fontSize: 12
+            ),
+          )
+        ],
+      ) ,
       subtitle: Row(children: <Widget>[
         Expanded(
           flex: 5,
@@ -214,10 +233,8 @@ class ProfilePage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40)),
             ),
           ),
-          Container(
-            height: 300,
-            child: currentOrdersListView(global.currOrders),
-          ),
+          CurrentOrderWidget(),
+          SizedBox(height: 10),
           ButtonTheme(
             minWidth: 20.0,
             height: 30.0,

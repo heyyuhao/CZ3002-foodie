@@ -131,14 +131,14 @@ class _CartPageState extends State<CartPage> {
             minWidth: 120.0,
             height: 35.0,
             child: RaisedButton(
-              onPressed: () {
+              onPressed: (global.getCartItems().length > 0) ? () {
                 print('check out');
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => CheckOutPage()));
-              },
-              color: Colors.blue,
+              } : null,
+              color: (global.getCartItems().length > 0) ? Colors.blue : Colors.grey,
               child: Padding(
                 padding: const EdgeInsets.all(0),
                 child: Text(
