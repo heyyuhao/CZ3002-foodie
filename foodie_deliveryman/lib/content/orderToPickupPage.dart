@@ -4,7 +4,14 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_deliveryman/model/order.dart';
 import 'package:foodie_deliveryman/keys/keys.dart';
 
-class OrderToPickupPage extends StatelessWidget {
+class OrderToPickupPage extends StatefulWidget {
+  @override
+  _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
+}
+class _RefreshFutureBuilderState extends State<OrderToPickupPage> {
+
+  Future<QuerySnapshot> ordersToPickUpQuerySnapshot = getOrdersToPickUp();
+
   ListTile makeListTile(BuildContext context, Order order) => ListTile(
     contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
     title: Text(
@@ -60,6 +67,10 @@ class OrderToPickupPage extends StatelessWidget {
                     // await confirmOrder(order.orderID);
                     await pickUpOrder(order.orderID);
                     globalKey.currentState.showSnackBar(SnackBar(content: Text('Picked up order!')));
+                    setState(() {
+                      // setstate is in statefulwidget
+                      ordersToPickUpQuerySnapshot = getOrdersToPickUp();
+                    });
                     Navigator.of(context).pop();
                   },
                 ),
@@ -82,7 +93,8 @@ class OrderToPickupPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: getOrdersToPickUp(),
+        // future: getOrdersToPickUp(),
+        future: ordersToPickUpQuerySnapshot,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));
@@ -96,17 +108,20 @@ class OrderToPickupPage extends StatelessWidget {
               // printOrderDocument(element);
               orders.add(getOrderFromDocument(element));
             });
-            return Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: orders.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(context, orders[index]);
-                },
-              ),
-            );
+
+            return
+              Container(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: orders.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return makeCard(context, orders[index]);
+                  },
+                ),
+              );
           }
+
           return Container(child: Center(
             child: DotsIndicator(
               dotsCount: 3,

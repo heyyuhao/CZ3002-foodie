@@ -5,7 +5,14 @@ import 'package:foodie_vendor/keys/keys.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_vendor/auth/googleAuth.dart';
 
-class OrderPage extends StatelessWidget {
+class OrderPage extends StatefulWidget {
+  @override
+  _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
+}
+class _RefreshFutureBuilderState extends State<OrderPage> {
+
+  Future<QuerySnapshot> ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
+
   ListTile confirmedOrderListTile(BuildContext context, Order order) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -248,6 +255,9 @@ class OrderPage extends StatelessWidget {
                                             SnackBar(
                                                 content:
                                                     Text('Order Confirmed')));
+                                        setState(() {
+                                          ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
+                                        });
                                         Navigator.of(context).pop();
                                       },
                                     ),
@@ -264,7 +274,7 @@ class OrderPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: getOrdersForVendor(restaurant.name, restaurant.location),
+        future: ordersForVendor,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));
@@ -276,7 +286,13 @@ class OrderPage extends StatelessWidget {
             List<Order> orders = [];
             orderDocuments.forEach((element) {
               // printOrderDocument(element);
-              orders.add(getOrderFromDocument(element));
+              Order order = getOrderFromDocument(element);
+              if (order.status==OrderStatus.Confirmed.index){
+                orders.add(order);
+              }
+              else{
+                orders.insert(0, order);
+              }
             });
             return Container(
               child: ListView.builder(
