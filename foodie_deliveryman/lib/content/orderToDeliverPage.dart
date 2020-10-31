@@ -4,7 +4,16 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_deliveryman/model/order.dart';
 import 'package:foodie_deliveryman/keys/keys.dart';
 
-class OrderToDeliverPage extends StatelessWidget {
+class OrderToDeliverPage extends StatefulWidget {
+
+  @override
+  _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
+  }
+
+  class _RefreshFutureBuilderState extends State<OrderToDeliverPage> {
+
+  Future<QuerySnapshot> ordersToDeliverQuerySnapshot = getOrdersToDeliver();
+
   ListTile makeListTile(BuildContext context, Order order) => ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
@@ -59,6 +68,10 @@ class OrderToDeliverPage extends StatelessWidget {
                         // await confirmOrder(order.orderID);
                         await deliveredOrder(order.orderID);
                         globalKey.currentState.showSnackBar(SnackBar(content: Text('Delivered order!')));
+                        setState(() {
+                          // setstate is in statefulwidget
+                          ordersToDeliverQuerySnapshot = getOrdersToDeliver();
+                        });
                         Navigator.of(context).pop();
                       },
                     ),
@@ -81,7 +94,7 @@ class OrderToDeliverPage extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: getOrdersToDeliver(),
+        future: ordersToDeliverQuerySnapshot,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));

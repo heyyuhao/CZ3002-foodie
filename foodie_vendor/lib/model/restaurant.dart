@@ -95,7 +95,7 @@ Dish getDishFromDocument(DocumentSnapshot dishDocument) {
   String dishID = dishDocument.reference.id;
   String name = dishDocument.data()['name'];
   String picture = dishDocument.data()['picture'];
-  double price = dishDocument.data()['price'];
+  double price = dishDocument.data()['price'].toDouble();
 
   Dish dish = new Dish(dishID,name,  picture, price);
   return dish;

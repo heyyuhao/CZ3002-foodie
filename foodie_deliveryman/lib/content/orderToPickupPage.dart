@@ -67,12 +67,10 @@ class _RefreshFutureBuilderState extends State<OrderToPickupPage> {
                     // await confirmOrder(order.orderID);
                     await pickUpOrder(order.orderID);
                     globalKey.currentState.showSnackBar(SnackBar(content: Text('Picked up order!')));
-                    // onPressed: () {
                     setState(() {
                       // setstate is in statefulwidget
                       ordersToPickUpQuerySnapshot = getOrdersToPickUp();
                     });
-                    // },
                     Navigator.of(context).pop();
                   },
                 ),
