@@ -183,6 +183,15 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
     // add this order to current order as well
     global.addToCurrentOrders(orderToAdd);
+
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ContentPage()
+        ),
+            (Route<dynamic> route) => false
+    );
+
   }
 
   @override
