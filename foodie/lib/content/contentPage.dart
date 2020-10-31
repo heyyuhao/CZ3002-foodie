@@ -3,7 +3,6 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:foodie/content/profilePage.dart';
 import 'package:foodie/content/restaurantsPage.dart';
-import 'package:foodie/keys/keys.dart';
 
 
 class ContentPage extends StatefulWidget {
@@ -53,19 +52,6 @@ class _ContentPageState extends State<ContentPage> {
           title,
           style: TextStyle(color: Colors.blue),
         ),
-        // actions: (selectedPos == 0)
-        //     ? <Widget>[
-        //         IconButton(
-        //           icon: Icon(
-        //             Icons.shopping_cart,
-        //             color: Colors.white,
-        //           ),
-        //           onPressed: () {
-        //             print('clicked cart');
-        //           },
-        //         )
-        //       ]
-        //     : null,
       );
     }
 
@@ -85,7 +71,6 @@ class _ContentPageState extends State<ContentPage> {
     }
 
     return Scaffold(
-      key: globalKey,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topBar(),
       body: (selectedPos == 0) ? RestaurantsPage() : ProfilePage(),
