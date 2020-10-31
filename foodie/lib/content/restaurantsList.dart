@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:foodie/model/restaurant.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie/content/restaurantDetailPage.dart';
+import 'package:foodie/global.dart' as global;
 
 class RestaurantsList extends StatefulWidget {
   RestaurantsList({Key key, this.title}) : super(key: key);
@@ -55,12 +56,14 @@ class RestaurantsListState extends State<RestaurantsList> {
             size: 30.0,
           ),
           onPressed: () {
+            global.setCurrentRestaurant(restaurant);
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => RestaurantDetailPage(restaurant: restaurant)));
           }),
       onTap: () {
+        global.setCurrentRestaurant(restaurant);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -82,8 +85,6 @@ class RestaurantsListState extends State<RestaurantsList> {
 
   @override
   Widget build(BuildContext context) {
-    // List<Restaurant> restaurants = [];
-
     return FutureBuilder<QuerySnapshot>(
         future: getRestaurants(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

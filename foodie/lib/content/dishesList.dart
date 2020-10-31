@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/model/restaurant.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-
+import 'package:foodie/global.dart' as global;
+import 'package:foodie/keys/keys.dart';
 
 class DishesList extends StatelessWidget {
   final Restaurant restaurant;
@@ -30,8 +31,7 @@ class DishesList extends StatelessWidget {
             flex: 5,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
-                child:
-                Text("Price: ", style: TextStyle(color: Colors.white))),
+                child: Text("Price: ", style: TextStyle(color: Colors.white))),
           ),
           Expanded(
             flex: 5,
@@ -49,10 +49,13 @@ class DishesList extends StatelessWidget {
             size: 30.0,
           ),
           onPressed: () {
-            print('this dish is tapped');
+            global.addDishToCart(dish);
+            restaurantDetailKey.currentState
+                .showSnackBar(SnackBar(content: Text('Dish Added')));
+            print('this dish is added');
           }),
       onTap: () {
-        print('this dish is tapped');
+        print('this dish is added');
       },
     );
   }
@@ -70,7 +73,6 @@ class DishesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return FutureBuilder<QuerySnapshot>(
         future: getDishOfRestaurant(restaurant.restaurantID),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -100,17 +102,17 @@ class DishesList extends StatelessWidget {
 
           return Container(
               child: Center(
-                child: DotsIndicator(
-                  dotsCount: 3,
-                  position: 1.0,
-                  decorator: DotsDecorator(
-                    size: const Size.square(9.0),
-                    activeSize: const Size(18.0, 9.0),
-                    activeShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                  ),
-                ),
-              ));
+            child: DotsIndicator(
+              dotsCount: 3,
+              position: 1.0,
+              decorator: DotsDecorator(
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+              ),
+            ),
+          ));
         });
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodie/model/restaurant.dart';
 import 'package:foodie/content/restaurantPageTopWidget.dart';
 import 'package:foodie/content/dishesList.dart';
+import 'package:foodie/keys/keys.dart';
 
 class RestaurantDetailPage extends StatelessWidget {
   final Restaurant restaurant;
@@ -32,6 +33,7 @@ class RestaurantDetailPage extends StatelessWidget {
     );
 
     return Scaffold(
+      key: restaurantDetailKey,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       body: Column(
         children: <Widget>[

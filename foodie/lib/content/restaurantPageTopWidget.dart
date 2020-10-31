@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/model/restaurant.dart';
-
+import 'package:foodie/content/cartPage.dart';
 
 class RestaurantTopWidget extends StatelessWidget {
   final Restaurant restaurant;
@@ -23,7 +23,7 @@ class RestaurantTopWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 60),
+                  SizedBox(width: 50),
                   CircleAvatar(
                     backgroundImage: NetworkImage(
                       (restaurant.picture != "") ? restaurant.picture : fallBackImage,
@@ -93,6 +93,23 @@ class RestaurantTopWidget extends StatelessWidget {
             },
             child: Icon(
               Icons.arrow_back,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+        ),
+        Positioned(
+          right: 8.0,
+          top: 40.0,
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CartPage()));
+            },
+            child: Icon(
+              Icons.shopping_cart,
               color: Colors.white,
               size: 30,
             ),
