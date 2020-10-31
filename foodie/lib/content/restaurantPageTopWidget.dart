@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/model/restaurant.dart';
 import 'package:foodie/content/cartPage.dart';
+import 'package:foodie/global.dart' as global;
+
 
 class RestaurantTopWidget extends StatelessWidget {
   final Restaurant restaurant;
@@ -89,6 +91,8 @@ class RestaurantTopWidget extends StatelessWidget {
           top: 40.0,
           child: InkWell(
             onTap: () {
+              print('clear all cart items');
+              global.clearCartItems();
               Navigator.pop(context);
             },
             child: Icon(

@@ -10,6 +10,15 @@ Restaurant currentRestaurant;
 HashMap<Dish, int> cartItemsMap = new HashMap();
 
 
+List<CartItem> getCartItems() {
+  List<CartItem> cartItems = [];
+  cartItemsMap.forEach((dish, quantity) {
+    cartItems.add(new CartItem(dish, quantity));
+  });
+  return cartItems;
+}
+
+
 void addDishToCart(Dish dish) {
   if (cartItemsMap.containsKey(dish)) {
     cartItemsMap[dish] += 1;
@@ -19,17 +28,15 @@ void addDishToCart(Dish dish) {
 }
 
 
+void clearCartItems() {
+  cartItemsMap = new HashMap();
+}
+
+
 void setCurrentRestaurant(Restaurant restaurant) {
   currentRestaurant = restaurant;
 }
 
-List<CartItem> getCartItems() {
-  List<CartItem> cartItems = [];
-  cartItemsMap.forEach((dish, quantity) {
-    cartItems.add(new CartItem(dish, quantity));
-  });
-  return cartItems;
-}
 
 void setCurrentOrders() {
   return ;
