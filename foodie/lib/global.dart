@@ -34,3 +34,13 @@ List<CartItem> getCartItems() {
 void setCurrentOrder() {
   return ;
 }
+
+
+double getCartTotalPrice() {
+  double totalPrice = 0;
+  cartItemsMap.forEach((dish, quantity) {
+    totalPrice += dish.unitPrice * quantity;
+  });
+
+  return totalPrice;
+}
