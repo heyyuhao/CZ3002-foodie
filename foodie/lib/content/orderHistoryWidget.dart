@@ -6,39 +6,50 @@ import 'package:foodie/model/order.dart';
 
 
 class OrderHistoryWidget extends StatelessWidget {
+  String getOrderTimeString(DateTime deliveryTimeStart) {
+    String isoString = deliveryTimeStart.toIso8601String();
+    String dateString = isoString.substring(0, 10);
+    String timeString = isoString.substring(11, 13);
+    if (timeString == "12") {
+      timeString = "Lunch";
+    }
+    if (timeString == "18") {
+      timeString = "Dinner";
+    }
+    return dateString + "  " + timeString;
+  }
+  
   ListTile orderHistoryList(BuildContext context, Order order) => ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
           order.orderName,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.bold
+          ),
         ),
         subtitle: Row(
           children: <Widget>[
             Expanded(
-              flex: 2,
+              flex: 6,
               child: Padding(
                   padding: EdgeInsets.only(top: 10.0),
-                  child: Text("Time: ", style: TextStyle(color: Colors.white))),
-            ),
-            Expanded(
-              flex: 7,
-              child: Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Text("${order.totalPrice}",
+                  child: Text("${getOrderTimeString(order.deliveryTimeStart)}",
                       style: TextStyle(color: Colors.white))),
             ),
             Expanded(
-              flex: 4,
+              flex: 3,
               child: Padding(
                   padding: EdgeInsets.only(top: 10.0),
                   child: Text("Total Price: ",
                       style: TextStyle(color: Colors.white))),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Padding(
                   padding: EdgeInsets.only(top: 10.0),
-                  child: Text("${order.totalPrice}",
+                  child: Text("\$${order.totalPrice}",
                       style: TextStyle(color: Colors.white))),
             )
           ],
