@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie_vendor/model/order.dart';
-import 'package:foodie_vendor/keys/keys.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie_vendor/auth/googleAuth.dart';
 
@@ -9,9 +8,10 @@ class OrderPage extends StatefulWidget {
   @override
   _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
 }
-class _RefreshFutureBuilderState extends State<OrderPage> {
 
-  Future<QuerySnapshot> ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
+class _RefreshFutureBuilderState extends State<OrderPage> {
+  Future<QuerySnapshot> ordersForVendor =
+      getOrdersForVendor(restaurant.name, restaurant.location);
 
   ListTile confirmedOrderListTile(BuildContext context, Order order) {
     return ListTile(
@@ -19,10 +19,7 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       title: Text(
         order.orderName,
         style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.bold,
-          fontSize: 13
-        ),
+            color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 13),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
@@ -41,10 +38,7 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       title: Text(
         order.orderName,
         style: TextStyle(
-            color: Colors.red,
-            fontWeight: FontWeight.bold,
-            fontSize: 13
-        ),
+            color: Colors.red, fontWeight: FontWeight.bold, fontSize: 13),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
@@ -63,10 +57,7 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       title: Text(
         order.orderName,
         style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 13
-        ),
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 13),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
@@ -93,11 +84,11 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
             ),
           )),
           DataCell(Text(
-              item.quantity.toString(),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+            item.quantity.toString(),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           )),
           DataCell(Text(
             (item.quantity * item.unitPrice).toString(),
@@ -188,40 +179,37 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                              title: Text("Reject " + order.orderName),
-                              content: Text(
-                                  "Are you sure to reject this order?\n(Tap outside to dismiss)"),
-                              actions: <Widget>[
-                                new FlatButton(
-                                  child: new Text(
-                                    "Reject",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.red,
+                                  title: Text("Reject " + order.orderName),
+                                  content: Text(
+                                      "Are you sure to reject this order?\n(Tap outside to dismiss)"),
+                                  actions: <Widget>[
+                                    new FlatButton(
+                                      child: new Text(
+                                        "Reject",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        print("Rejected order");
+                                        await rejectOrder(order.orderID);
+                                        Navigator.of(context).pop();
+                                      },
                                     ),
-                                  ),
-                                  onPressed: () async {
-                                    print("Rejected order");
-                                    await rejectOrder(order.orderID);
-                                    globalKey.currentState.showSnackBar(
-                                        SnackBar(
-                                            content: Text('Order Rejected')));
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                                new FlatButton(
-                                  child: new Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
+                                    new FlatButton(
+                                      child: new Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        Navigator.of(context).pop();
+                                      },
                                     ),
-                                  ),
-                                  onPressed: () async {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ]));
+                                  ]));
                     },
                   ),
                   const SizedBox(width: 16),
@@ -263,12 +251,10 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
                                       ),
                                       onPressed: () async {
                                         await confirmOrder(order.orderID);
-                                        globalKey.currentState.showSnackBar(
-                                            SnackBar(
-                                                content:
-                                                    Text('Order Confirmed')));
                                         setState(() {
-                                          ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
+                                          ordersForVendor = getOrdersForVendor(
+                                              restaurant.name,
+                                              restaurant.location);
                                         });
                                         Navigator.of(context).pop();
                                       },
@@ -299,51 +285,51 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
             orderDocuments.forEach((element) {
               // printOrderDocument(element);
               Order order = getOrderFromDocument(element);
-              if (order.status==OrderStatus.Confirmed.index){
+              if (order.status == OrderStatus.Confirmed.index) {
                 orders.add(order);
-              }
-              else{
+              } else {
                 orders.insert(0, order);
               }
             });
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                ConstrainedBox(
-                  constraints: const BoxConstraints(minWidth: double.infinity),
-                  child: RaisedButton(
-                    onPressed: () {
-                      setState(() {
-                        ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
-                      });
-                    },
-                    color: Colors.blueGrey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        'Refresh',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(minWidth: double.infinity),
+                    child: RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          ordersForVendor = getOrdersForVendor(
+                              restaurant.name, restaurant.location);
+                        });
+                      },
+                      color: Colors.blueGrey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          'Refresh',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
                       ),
+                      elevation: 5,
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40)),
                     ),
-                    elevation: 5,
-                    // shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(40)),
                   ),
-                ),
-                Container(
-                  height: 460,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: orders.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return makeCard(context, orders[index]);
-                    },
+                  Container(
+                    height: 440,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: orders.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return makeCard(context, orders[index]);
+                      },
+                    ),
                   ),
-                ),
-              ]
-            );
+                ]);
           }
 
           return Container(

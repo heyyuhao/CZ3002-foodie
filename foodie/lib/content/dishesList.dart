@@ -28,13 +28,13 @@ class DishesList extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("Price: ", style: TextStyle(color: Colors.white))),
           ),
           Expanded(
-            flex: 5,
+            flex: 9,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("${dish.unitPrice}",

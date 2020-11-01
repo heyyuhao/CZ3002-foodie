@@ -3,7 +3,6 @@ import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/cart.dart';
 import 'package:foodie/content/checkOutPage.dart';
 
-
 class CartPage extends StatefulWidget {
   CartPage({Key key}) : super(key: key);
 
@@ -31,27 +30,26 @@ class _CartPageState extends State<CartPage> {
       subtitle: Row(
         children: <Widget>[
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("Price: ", style: TextStyle(color: Colors.white))),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("${cartItem.dish.unitPrice}",
                     style: TextStyle(color: Colors.white))),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
-                child:
-                    Text("Qty: ", style: TextStyle(color: Colors.white))),
+                child: Text("Qty: ", style: TextStyle(color: Colors.white))),
           ),
           Expanded(
-            flex: 5,
+            flex: 3,
             child: Padding(
                 padding: EdgeInsets.only(bottom: 10.0),
                 child: Text("${cartItem.quantity}",
@@ -131,14 +129,18 @@ class _CartPageState extends State<CartPage> {
             minWidth: 120.0,
             height: 35.0,
             child: RaisedButton(
-              onPressed: (global.getCartItems().length > 0) ? () {
-                print('check out');
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CheckOutPage()));
-              } : null,
-              color: (global.getCartItems().length > 0) ? Colors.blue : Colors.grey,
+              onPressed: (global.getCartItems().length > 0)
+                  ? () {
+                      print('check out');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CheckOutPage()));
+                    }
+                  : null,
+              color: (global.getCartItems().length > 0)
+                  ? Colors.blue
+                  : Colors.grey,
               child: Padding(
                 padding: const EdgeInsets.all(0),
                 child: Text(

@@ -186,12 +186,8 @@ class _CheckOutPageState extends State<CheckOutPage> {
 
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-            builder: (context) => ContentPage()
-        ),
-            (Route<dynamic> route) => false
-    );
-
+        MaterialPageRoute(builder: (context) => ContentPage()),
+        (Route<dynamic> route) => false);
   }
 
   @override

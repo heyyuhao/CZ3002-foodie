@@ -3,7 +3,6 @@ import 'package:foodie/model/restaurant.dart';
 import 'package:foodie/content/cartPage.dart';
 import 'package:foodie/global.dart' as global;
 
-
 class RestaurantTopWidget extends StatelessWidget {
   final Restaurant restaurant;
   RestaurantTopWidget({Key key, this.restaurant}) : super(key: key);
@@ -13,7 +12,6 @@ class RestaurantTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: <Widget>[
         Container(
@@ -28,7 +26,9 @@ class RestaurantTopWidget extends StatelessWidget {
                   SizedBox(width: 50),
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      (restaurant.picture != "") ? restaurant.picture : fallBackImage,
+                      (restaurant.picture != "")
+                          ? restaurant.picture
+                          : fallBackImage,
                     ),
                     radius: 30,
                     backgroundColor: Colors.transparent,
@@ -108,9 +108,7 @@ class RestaurantTopWidget extends StatelessWidget {
           child: InkWell(
             onTap: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CartPage()));
+                  context, MaterialPageRoute(builder: (context) => CartPage()));
             },
             child: Icon(
               Icons.shopping_cart,

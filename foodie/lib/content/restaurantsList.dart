@@ -41,7 +41,7 @@ class RestaurantsListState extends State<RestaurantsList> {
                     Text("Location: ", style: TextStyle(color: Colors.white))),
           ),
           Expanded(
-            flex: 5,
+            flex: 7,
             child: Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: Text("${restaurant.location}",
@@ -60,14 +60,16 @@ class RestaurantsListState extends State<RestaurantsList> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => RestaurantDetailPage(restaurant: restaurant)));
+                    builder: (context) =>
+                        RestaurantDetailPage(restaurant: restaurant)));
           }),
       onTap: () {
         global.setCurrentRestaurant(restaurant);
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => RestaurantDetailPage(restaurant: restaurant)));
+                builder: (context) =>
+                    RestaurantDetailPage(restaurant: restaurant)));
       },
     );
   }
