@@ -5,13 +5,11 @@ import 'package:foodie_deliveryman/model/order.dart';
 import 'package:foodie_deliveryman/keys/keys.dart';
 
 class OrderToDeliverPage extends StatefulWidget {
-
   @override
   _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
-  }
+}
 
-  class _RefreshFutureBuilderState extends State<OrderToDeliverPage> {
-
+class _RefreshFutureBuilderState extends State<OrderToDeliverPage> {
   Future<QuerySnapshot> ordersToDeliverQuerySnapshot = getOrdersToDeliver();
 
   ListTile makeListTile(BuildContext context, Order order) => ListTile(
@@ -39,44 +37,48 @@ class OrderToDeliverPage extends StatefulWidget {
             ),
             onPressed: () {
               print('order change delivery state');
-              showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-                  title: Text(order.orderName),
-                  content: Text("Delivered this order?\n(Tap outside to dismiss)"),
-                  actions: <Widget>[
-                    new FlatButton(
-                      child: new Text(
-                        "No",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    new FlatButton(
-                      child: new Text(
-                        "Yes",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
-                      onPressed: () async {
-                        print("Picked up order");
-                        // await confirmOrder(order.orderID);
-                        await deliveredOrder(order.orderID);
-                        globalKey.currentState.showSnackBar(SnackBar(content: Text('Delivered order!')));
-                        setState(() {
-                          // setstate is in statefulwidget
-                          ordersToDeliverQuerySnapshot = getOrdersToDeliver();
-                        });
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ])
-              );
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                          title: Text(order.orderName),
+                          content: Text(
+                              "Delivered this order?\n(Tap outside to dismiss)"),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text(
+                                "No",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            new FlatButton(
+                              child: new Text(
+                                "Yes",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              onPressed: () async {
+                                print("Picked up order");
+                                // await confirmOrder(order.orderID);
+                                await deliveredOrder(order.orderID);
+                                globalKey.currentState.showSnackBar(SnackBar(
+                                    content: Text('Delivered order!')));
+                                setState(() {
+                                  // setstate is in statefulwidget
+                                  ordersToDeliverQuerySnapshot =
+                                      getOrdersToDeliver();
+                                });
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ]));
             }),
         onTap: () {
           print('this order is tapped');
@@ -108,18 +110,47 @@ class OrderToDeliverPage extends StatefulWidget {
               // printOrderDocument(element);
               orders.add(getOrderFromDocument(element));
             });
-            return Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: orders.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(context, orders[index]);
-                },
-              ),
-            );
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(minWidth: double.infinity),
+                    child: RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          ordersToDeliverQuerySnapshot =
+                              getOrdersToDeliver();
+                        });
+                      },
+                      color: Colors.blueGrey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          'Refresh',
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                        ),
+                      ),
+                      elevation: 5,
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40)),
+                    ),
+                  ),
+                  Container(
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: orders.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return makeCard(context, orders[index]);
+                      },
+                    ),
+                  )
+                ]);
           }
-          return Container(child: Center(
+          return Container(
+              child: Center(
             child: DotsIndicator(
               dotsCount: 3,
               position: 1.0,

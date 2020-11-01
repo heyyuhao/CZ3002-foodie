@@ -5,8 +5,14 @@ import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/order.dart';
 import 'package:foodie/content/colorUtil.dart';
 
+class CurrentOrderWidget extends StatefulWidget {
+  @override
+  _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
+  }
+  class _RefreshFutureBuilderState extends State<CurrentOrderWidget> {
 
-class CurrentOrderWidget extends StatelessWidget {
+  Future<QuerySnapshot> currentOrdersForUser = getCurrentOrdersForUser(global.appUser.userID);
+
   ListTile currentOrderListTile(Order order) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -141,7 +147,7 @@ class CurrentOrderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-        future: getCurrentOrdersForUser(global.appUser.userID),
+        future: currentOrdersForUser,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Container(child: Text('Error when loading data'));
@@ -155,9 +161,37 @@ class CurrentOrderWidget extends StatelessWidget {
               orders.add(getOrderFromDocument(element));
             });
             print('length ${orders.length}');
-            return Container(
-              height: 310,
-              child: currentOrdersListView(orders),
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints:
+                        const BoxConstraints(minWidth: double.infinity, maxHeight: 20.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          currentOrdersForUser = getCurrentOrdersForUser(global.appUser.userID);
+                        });
+                      },
+                      color: Colors.blueGrey,
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text(
+                          'Refresh',
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
+                      ),
+                      elevation: 5,
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(40)),
+                    ),
+                  ),
+                  Container(
+                    height: 300,
+                    child: currentOrdersListView(orders),
+                  )
+                ]
             );
           }
 

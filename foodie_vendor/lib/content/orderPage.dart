@@ -320,6 +320,7 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
                   ),
                 ),
                 Container(
+                  height: 460,
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
