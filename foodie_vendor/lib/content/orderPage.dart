@@ -18,7 +18,11 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Text(
         order.orderName,
-        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          fontSize: 13
+        ),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
@@ -36,7 +40,11 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Text(
         order.orderName,
-        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 13
+        ),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
@@ -54,7 +62,11 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       title: Text(
         order.orderName,
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 13
+        ),
       ),
       subtitle: Row(children: <Widget>[
         Expanded(
