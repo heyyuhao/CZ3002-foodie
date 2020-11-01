@@ -1,79 +1,119 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:foodie/model/restaurant.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 
-final List<String> imgList = [
-  'https://www.zaobao.com.sg/sites/default/files/images/201706/20170628/20170628_news_ntu01.jpg',
-  'http://www.jayyeo.com/projects/nanyangchronicle/wp-content/uploads/2013/08/KW_9179_RS.jpg',
-  'http://www.ntu.edu.sg/has/FnB/SiteAssets/Pages/HallCanteens/NorthHIllFC_280x180.jpg',
-  'https://pic.sgchinese.net/attachments/forum/201508/19/113839h24fzyztfmm6iid7.png',
-  'http://1.bp.blogspot.com/-YO6qZgyktUs/Um_E-YhopuI/AAAAAAAAKQs/1R9fc56wmd4/s1600/2.+NTU+Hall+13+%2528Hong+Yun%2529.JPG',
-];
 
-final List<String> nameList = [
-  "365 Mala Tang",
-  "HeyTea",
-  "Korean Cuisine",
-  "Raydy Prawn Mee",
-  "Route 35 Western Food",
-];
+class CarouselPromotion extends StatefulWidget {
+  CarouselPromotion({Key key, this.title}) : super(key: key);
+  final String title;
 
-List<T> map<T>(List list, Function handler) {
-  List<T> result = [];
-  for (var i = 0; i < list.length; i++) {
-    result.add(handler(i, list[i]));
-  }
-
-  return result;
+  @override
+  CarouselPromotionState createState() => new CarouselPromotionState();
 }
 
-final List promotions = map<Widget>(imgList, (index, i) {
-  return Container(
-      margin: EdgeInsets.all(5.0),
-      child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Stack(
-            children: <Widget>[
-              Image.network(
-                i,
-                fit: BoxFit.cover,
-                width: 1000.0,
-              ),
-              Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(200, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0)
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                      )),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 40.0, horizontal: 40.0),
-                      child: Text(
-                        '${nameList[index]}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ))),
-            ],
-          )));
-}).toList();
+class CarouselPromotionState extends State<CarouselPromotion> {
+  final String fallBackImage =
+      "https://www.clipartmax.com/png/middle/138-1381067_fried-fish-fish-fry-roasting-fish-on-dish-cartoon.png";
 
-class CarouselPromotion extends StatelessWidget {
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-        height: 100,
-        autoPlay: false,
-        viewportFraction: 0.8,
-        aspectRatio: 2.0,
-        items: promotions);
+    return FutureBuilder<QuerySnapshot>(
+        future: getRestaurants(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Container(child: Text('Error when loading data'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            List<DocumentSnapshot> restaurantDocuments = snapshot.data.docs;
+            print('print orders done in main page');
+            List<Restaurant> restaurants = [];
+            restaurantDocuments.forEach((element) {
+              restaurants.add(getRestaurantFromDocumentWithoutDish(element));
+            });
+
+            List<String> imageList = [];
+            List<String> nameList = [];
+
+            restaurants.forEach((restaurant) {
+              imageList.add(restaurant.picture);
+              nameList.add(restaurant.name);
+            });
+
+            final List promotions = map<Widget>(imageList, (index, i) {
+              return Container(
+                  margin: EdgeInsets.all(5.0),
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      child: Stack(
+                        children: <Widget>[
+                          Image.network(
+                            i,
+                            fit: BoxFit.cover,
+                            width: 1000.0,
+                          ),
+                          Positioned(
+                              bottom: 0.0,
+                              left: 0.0,
+                              right: 0.0,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(200, 0, 0, 0),
+                                          Color.fromARGB(0, 0, 0, 0)
+                                        ],
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                      )),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 40.0, horizontal: 40.0),
+                                  child: Text(
+                                    '${nameList[index]}',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ))),
+                        ],
+                      )));
+            }).toList();
+
+            return CarouselSlider(
+                height: 100,
+                autoPlay: false,
+                viewportFraction: 0.8,
+                aspectRatio: 2.0,
+                items: promotions);
+          }
+
+          return Container(
+              child: Center(
+                child: DotsIndicator(
+                  dotsCount: 3,
+                  position: 1.0,
+                  decorator: DotsDecorator(
+                    size: const Size.square(9.0),
+                    activeSize: const Size(18.0, 9.0),
+                    activeShape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0)),
+                  ),
+                ),
+              ));
+        });
   }
 }
+

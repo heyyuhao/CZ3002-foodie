@@ -294,15 +294,42 @@ class _RefreshFutureBuilderState extends State<OrderPage> {
                 orders.insert(0, order);
               }
             });
-            return Container(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: orders.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return makeCard(context, orders[index]);
-                },
-              ),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                ConstrainedBox(
+                  constraints: const BoxConstraints(minWidth: double.infinity),
+                  child: RaisedButton(
+                    onPressed: () {
+                      setState(() {
+                        ordersForVendor = getOrdersForVendor(restaurant.name, restaurant.location);
+                      });
+                    },
+                    color: Colors.blueGrey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        'Refresh',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                    elevation: 5,
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(40)),
+                  ),
+                ),
+                Container(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: orders.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return makeCard(context, orders[index]);
+                    },
+                  ),
+                ),
+              ]
             );
           }
 

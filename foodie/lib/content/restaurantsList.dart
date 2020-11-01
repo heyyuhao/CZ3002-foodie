@@ -101,6 +101,7 @@ class RestaurantsListState extends State<RestaurantsList> {
             });
 
             return Container(
+              height: 360,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
