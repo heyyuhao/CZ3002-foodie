@@ -9,7 +9,6 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
-
   @override
   Widget build(BuildContext context) {
     Widget topBar() {

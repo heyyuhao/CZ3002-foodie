@@ -4,7 +4,6 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:foodie/global.dart' as global;
 import 'package:foodie/model/order.dart';
 
-
 class OrderHistoryWidget extends StatelessWidget {
   String getOrderTimeString(DateTime deliveryTimeStart) {
     String isoString = deliveryTimeStart.toIso8601String();
@@ -18,16 +17,13 @@ class OrderHistoryWidget extends StatelessWidget {
     }
     return dateString + "  " + timeString;
   }
-  
+
   ListTile orderHistoryList(BuildContext context, Order order) => ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
           order.orderName,
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.bold
-          ),
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
         ),
         subtitle: Row(
           children: <Widget>[

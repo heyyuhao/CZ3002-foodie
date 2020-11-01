@@ -7,7 +7,6 @@ import 'package:foodie/model/order.dart';
 import 'package:foodie/content/colorUtil.dart';
 import 'package:foodie/content/currentOrderWidget.dart';
 
-
 class ProfilePage extends StatelessWidget {
   ListTile currentOrderListTile(Order order) {
     return ListTile(
@@ -19,8 +18,7 @@ class ProfilePage extends StatelessWidget {
             style: TextStyle(
                 color: getOrderStatusColor(order.status),
                 fontWeight: FontWeight.bold,
-              fontSize: 12
-            ),
+                fontSize: 12),
           ),
           SizedBox(height: 10),
           Text(
@@ -28,11 +26,10 @@ class ProfilePage extends StatelessWidget {
             style: TextStyle(
                 color: getOrderStatusColor(order.status),
                 fontWeight: FontWeight.bold,
-                fontSize: 12
-            ),
+                fontSize: 12),
           )
         ],
-      ) ,
+      ),
       subtitle: Row(children: <Widget>[
         Expanded(
           flex: 5,

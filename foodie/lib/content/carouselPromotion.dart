@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:foodie/model/restaurant.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
-
 class CarouselPromotion extends StatefulWidget {
   CarouselPromotion({Key key, this.title}) : super(key: key);
   final String title;
@@ -25,7 +24,6 @@ class CarouselPromotionState extends State<CarouselPromotion> {
     }
     return result;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +69,13 @@ class CarouselPromotionState extends State<CarouselPromotion> {
                               child: Container(
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromARGB(200, 0, 0, 0),
-                                          Color.fromARGB(0, 0, 0, 0)
-                                        ],
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                      )),
+                                    colors: [
+                                      Color.fromARGB(200, 0, 0, 0),
+                                      Color.fromARGB(0, 0, 0, 0)
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  )),
                                   padding: EdgeInsets.symmetric(
                                       vertical: 40.0, horizontal: 40.0),
                                   child: Text(
@@ -102,18 +100,17 @@ class CarouselPromotionState extends State<CarouselPromotion> {
 
           return Container(
               child: Center(
-                child: DotsIndicator(
-                  dotsCount: 3,
-                  position: 1.0,
-                  decorator: DotsDecorator(
-                    size: const Size.square(9.0),
-                    activeSize: const Size(18.0, 9.0),
-                    activeShape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0)),
-                  ),
-                ),
-              ));
+            child: DotsIndicator(
+              dotsCount: 3,
+              position: 1.0,
+              decorator: DotsDecorator(
+                size: const Size.square(9.0),
+                activeSize: const Size(18.0, 9.0),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
+              ),
+            ),
+          ));
         });
   }
 }
-

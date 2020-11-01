@@ -8,10 +8,11 @@ import 'package:foodie/content/colorUtil.dart';
 class CurrentOrderWidget extends StatefulWidget {
   @override
   _RefreshFutureBuilderState createState() => _RefreshFutureBuilderState();
-  }
-  class _RefreshFutureBuilderState extends State<CurrentOrderWidget> {
+}
 
-  Future<QuerySnapshot> currentOrdersForUser = getCurrentOrdersForUser(global.appUser.userID);
+class _RefreshFutureBuilderState extends State<CurrentOrderWidget> {
+  Future<QuerySnapshot> currentOrdersForUser =
+      getCurrentOrdersForUser(global.appUser.userID);
 
   ListTile currentOrderListTile(Order order) {
     return ListTile(
@@ -166,12 +167,13 @@ class CurrentOrderWidget extends StatefulWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
                   ConstrainedBox(
-                    constraints:
-                        const BoxConstraints(minWidth: double.infinity, maxHeight: 20.0),
+                    constraints: const BoxConstraints(
+                        minWidth: double.infinity, maxHeight: 20.0),
                     child: RaisedButton(
                       onPressed: () {
                         setState(() {
-                          currentOrdersForUser = getCurrentOrdersForUser(global.appUser.userID);
+                          currentOrdersForUser =
+                              getCurrentOrdersForUser(global.appUser.userID);
                         });
                       },
                       color: Colors.blueGrey,
@@ -188,11 +190,10 @@ class CurrentOrderWidget extends StatefulWidget {
                     ),
                   ),
                   Container(
-                    height: 300,
+                    height: 290,
                     child: currentOrdersListView(orders),
                   )
-                ]
-            );
+                ]);
           }
 
           return Container(

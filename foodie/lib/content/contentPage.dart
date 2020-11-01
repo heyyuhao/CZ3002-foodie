@@ -4,7 +4,6 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:foodie/content/profilePage.dart';
 import 'package:foodie/content/restaurantsPage.dart';
 
-
 class ContentPage extends StatefulWidget {
   ContentPage({Key key}) : super(key: key);
 

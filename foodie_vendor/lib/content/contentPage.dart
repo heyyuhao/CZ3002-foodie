@@ -3,7 +3,6 @@ import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:foodie_vendor/content/orderPage.dart';
 import 'package:foodie_vendor/content/restaurantPage.dart';
-import 'package:foodie_vendor/keys/keys.dart';
 
 class ContentPage extends StatefulWidget {
   ContentPage({Key key}) : super(key: key);
@@ -18,7 +17,7 @@ class _ContentPageState extends State<ContentPage> {
         labelStyle: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
     new TabItem(Icons.local_dining, "My Restaurant", Colors.orange,
         labelStyle:
-        TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+            TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
   ]);
 
   int selectedPos = 1;
@@ -69,7 +68,6 @@ class _ContentPageState extends State<ContentPage> {
     }
 
     return Scaffold(
-      key: globalKey,
       backgroundColor: Color.fromRGBO(58, 66, 86, 1.0),
       appBar: topBar(),
       body: (selectedPos == 0) ? OrderPage() : RestaurantPage(),

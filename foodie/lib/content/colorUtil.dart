@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/model/order.dart';
 
-
 Color getOrderStatusColor(int orderStatus) {
   if (orderStatus == OrderStatus.Rejected.index) {
     return Colors.red;
